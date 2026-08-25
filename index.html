@@ -593,7 +593,13 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   var form = document.getElementById("the-form");
 
   // ===== Draft autosave / restore =====
-  var draftKey = function () { return "ai_log_draft_" + ridPublic(researchId); };
+  // Keyed on the FULL id, not the public half. Keying on the public half made a
+  // provisional session (someone resuming with only that half, who cannot overwrite
+  // anything) share a draft slot with the real session. The local draft wins over the
+  // server copy, so answers typed during a refused attempt would resurface later and
+  // shadow the work actually stored in the sheet — and the student could then submit
+  // that shadow over their own good work. Separate slots keep the two apart.
+  var draftKey = function () { return "ai_log_draft_" + researchId; };
   var saveTimer = null;
 
   function collectRatingsFromDOM() {
