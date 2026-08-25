@@ -193,7 +193,7 @@ footer.page-foot { max-width: 780px; margin: 2em auto 0; padding: 0 1.1em; font-
     <div class="submit-hint" id="roster-hint"></div>
     <div class="roster-toggle"><a id="toggle-resume">Already registered on another device? Resume with your Research ID</a></div>
     <div class="resume-box" id="resume-box">
-      <input type="text" id="resume-id-input" placeholder="r-20260820-xxxxxx">
+      <input type="text" id="resume-id-input" placeholder="r-20260820-xxxxxx-xxxxxx">
       <button type="button" class="btn btn-secondary" id="btn-resume">Resume</button>
     </div>
   </div>
@@ -491,7 +491,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 </main>
 
 <footer class="page-foot">
-  Your Research ID is the only identifier attached to your project content. Keep it — you'll need it to resume on another device or to check in about your submission.
+  Your Research ID is the only identifier attached to your project content. Keep <b>all of it</b>, including the part after the last dash — you'll need the whole ID to resume on another device. The final part is never stored in the roster your research assistant holds, so it is the one piece nobody else can look up for you.
   <div class="ra-contact">
     Questions about your data, privacy, the private roster, or about this form? Contact your research assistant, <b>Ajarn Thoedkiat Pelaoda (อาจารย์เทอดเกียรติ เปเหล่าดา)</b>, Faculty of Humanities, UTCC — post in the project's Teams group, message directly on Microsoft Teams, email Thoedkiat_pel@utcc.ac.th, or call 096-401-3019.
   </div>
@@ -516,18 +516,48 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   ];
 
   // ===== Research ID =====
+  // A Research ID has two halves, and they go to different places on purpose:
+  //
+  //     r-20260824-jfa69a-k7m2qp
+  //     └──── public ────┘└secret┘
+  //
+  // The public half is the row key. It is what the roster receives, so the research
+  // assistant can match a grade back to a student at the end of term — that is his job.
+  // The secret half is sent ONLY to the submissions backend, never to the roster, and
+  // ?action=load will not return a student's written work without it. That keeps the
+  // assistant structurally unable to read transcripts he can put a name to, rather than
+  // merely asked not to. Students keep one string, exactly as before — just longer.
+  var ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789"; // no 0/1/l/o — avoids read-aloud errors
+
+  function randomChars(n) {
+    var out = "";
+    if (window.crypto && window.crypto.getRandomValues) {
+      var bytes = new Uint8Array(n);
+      window.crypto.getRandomValues(bytes);
+      for (var i = 0; i < n; i++) out += ALPHABET[bytes[i] % ALPHABET.length];
+    } else {
+      for (var j = 0; j < n; j++) out += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+    }
+    return out;
+  }
+
   function generateResearchId() {
     var date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-    var alphabet = "abcdefghjkmnpqrstuvwxyz23456789"; // no 0/1/l/o
-    var rand = "";
-    if (window.crypto && window.crypto.getRandomValues) {
-      var bytes = new Uint8Array(6);
-      window.crypto.getRandomValues(bytes);
-      for (var i = 0; i < 6; i++) rand += alphabet[bytes[i] % alphabet.length];
-    } else {
-      for (var j = 0; j < 6; j++) rand += alphabet[Math.floor(Math.random() * alphabet.length)];
-    }
-    return "r-" + date + "-" + rand;
+    return "r-" + date + "-" + randomChars(6) + "-" + randomChars(6);
+  }
+
+  /** Public half — the row key. Safe to send to the roster. Tolerates a student
+   *  pasting either the full ID or just the public half. */
+  function ridPublic(id) {
+    var m = String(id || "").trim().match(/^(r-\d{8}-[a-z0-9]+)/i);
+    return m ? m[1].toLowerCase() : String(id || "").trim().toLowerCase();
+  }
+
+  /** Secret half — never sent to the roster. Empty if the student only kept the
+   *  public half; they can still submit, they just cannot pull back an old draft. */
+  function ridKey(id) {
+    var parts = String(id || "").trim().toLowerCase().split("-");
+    return parts.length >= 4 ? parts[3] : "";
   }
   function hashToIndex(str, mod) {
     var h = 0;
@@ -553,7 +583,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   var form = document.getElementById("the-form");
 
   // ===== Draft autosave / restore =====
-  var draftKey = function () { return "ai_log_draft_" + researchId; };
+  var draftKey = function () { return "ai_log_draft_" + ridPublic(researchId); };
   var saveTimer = null;
 
   function collectRatingsFromDOM() {
@@ -634,7 +664,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     }
     // no local draft (new device?) — try loading last submitted version from the server
     if (!SUBMISSIONS_APPS_SCRIPT_URL) return;
-    fetch(SUBMISSIONS_APPS_SCRIPT_URL + "?action=load&id=" + encodeURIComponent(researchId), { method: "GET", redirect: "follow" })
+    fetch(SUBMISSIONS_APPS_SCRIPT_URL + "?action=load&id=" + encodeURIComponent(ridPublic(researchId))
+            + "&key=" + encodeURIComponent(ridKey(researchId)), { method: "GET", redirect: "follow" })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (result) {
         if (result && result.status === "ok" && result.fields) {
@@ -739,7 +770,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 
     fetch(ROSTER_APPS_SCRIPT_URL, {
       method: "POST",
-      body: JSON.stringify({ research_id: researchId, student_id: studentId, group: group }),
+      body: JSON.stringify({ research_id: ridPublic(researchId), student_id: studentId, group: group }),
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       redirect: "follow"
     })
@@ -789,15 +820,15 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   }
   function assignCompany() {
     var cached = null;
-    try { cached = localStorage.getItem("ai_log_company_" + researchId); } catch (e) {}
+    try { cached = localStorage.getItem("ai_log_company_" + ridPublic(researchId)); } catch (e) {}
     if (cached) { setAssignmentUI(cached, "Assignment restored from this browser."); return; }
     if (!SUBMISSIONS_APPS_SCRIPT_URL) { localDemoAssignment(); return; }
 
-    fetch(SUBMISSIONS_APPS_SCRIPT_URL + "?action=assign&id=" + encodeURIComponent(researchId), { method: "GET", redirect: "follow" })
+    fetch(SUBMISSIONS_APPS_SCRIPT_URL + "?action=assign&id=" + encodeURIComponent(ridPublic(researchId)), { method: "GET", redirect: "follow" })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function (result) {
         if (result && result.status === "ok" && result.company) {
-          try { localStorage.setItem("ai_log_company_" + researchId, result.company); } catch (e) {}
+          try { localStorage.setItem("ai_log_company_" + ridPublic(researchId), result.company); } catch (e) {}
           setAssignmentUI(result.company, "Assigned by the class roster — evenly rotated across all fourteen companies.");
         } else { throw new Error("bad response"); }
       })
@@ -881,7 +912,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 
   function buildPayload() {
     return {
-      research_id: researchId,
+      research_id: ridPublic(researchId),
+      resume_key: ridKey(researchId),
       p1_company: assignCard.dataset.company || "",
       p1_version: versionValue("p1_version"),
       p1_dialogue: form.p1_dialogue.value,
@@ -962,7 +994,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function (result) {
         if (result && result.status === "ok") {
-          setSubmitState("Submitted — thank you. Keep your Research ID (<code>" + researchId + "</code>) in case you need to reference this later.", false, true);
+          setSubmitState("Submitted — thank you. Keep your full Research ID (<code>" + researchId + "</code>) — including the part after the last dash — in case you need to resume on another device.", false, true);
           showResubmitBanner();
         } else { throw new Error("server returned status=" + (result && result.status)); }
       })
