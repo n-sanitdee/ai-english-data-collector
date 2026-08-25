@@ -75,6 +75,8 @@ main { max-width: 780px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 
 .warn-banner { display: flex; align-items: flex-start; gap: 0.6em; background: #fff6e5; border: 1px solid #e0a33c; border-radius: 8px; padding: 0.8em 1em; margin-bottom: 1.8em; font-size: 0.88em; color: #7a4c05; line-height: 1.5; }
 .warn-banner .warn-mark { font-weight: 700; }
+.switch-id { margin-left: auto; font-size: 0.92em; }
+.switch-id a { color: var(--green-deep); text-decoration: underline; cursor: pointer; }
 
 .section { margin-bottom: 2.4em; }
 .section-head { display: flex; align-items: baseline; gap: 0.6em; margin-bottom: 0.15em; flex-wrap: wrap; }
@@ -201,7 +203,7 @@ footer.page-foot { max-width: 780px; margin: 2em auto 0; padding: 0 1.1em; font-
     </div>
   </div>
 
-  <div class="registered-note" id="registered-note" hidden>✓ Registered — your Research ID is tied to your student record only in the private roster.</div>
+  <div class="registered-note" id="registered-note" hidden>✓ Registered — your Research ID is tied to your student record only in the private roster.<span class="switch-id"><a id="switch-id">Not you? Use a different Research ID</a></span></div>
 
   <div class="assign-card is-loading" id="assign-card" hidden>
     <div class="assign-block">
@@ -689,15 +691,16 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
         if (!ridKey(researchId)) {
           showWarnBanner(
             "You entered only the first part of your Research ID, so your previous answers " +
-            "could not be loaded. You can still fill this in and submit \u2014 but " +
-            "<b>submitting will replace anything you saved earlier</b>. If you still have your " +
-            "full ID somewhere, including the part after the last dash, reload and use that instead."
+            "could not be loaded \u2014 and if you have submitted before, <b>this half alone " +
+            "cannot replace that entry either</b>. Find your full ID, including the part after " +
+            "the last dash, and resume with that. If you have never submitted, you can carry on " +
+            "and your first submission will go through normally."
           );
         } else {
           showWarnBanner(
             "No previous answers were found for that Research ID. Please check you typed it " +
-            "exactly right, including the part after the last dash. <b>If you have submitted " +
-            "before, submitting now will replace that entry.</b>"
+            "exactly right, including the part after the last dash \u2014 an ID that is even " +
+            "slightly wrong will neither load your work nor let you resubmit over it."
           );
         }
       })
@@ -982,6 +985,25 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     hint.classList.toggle("err", !!isError);
   }
 
+  // A device is not a person. Without this, the first student to register on a shared
+  // computer owns it forever: the stored ID is picked up on every reload and the register
+  // panel never comes back. Clears identity only — drafts are keyed per Research ID, so
+  // leaving them means a student who steps away can pick up where they left off.
+  document.getElementById("switch-id").addEventListener("click", function (e) {
+    e.preventDefault();
+    var ok = window.confirm(
+      "Sign out of this Research ID on this device?\n\n" +
+      "You'll go back to the registration screen. Your saved draft stays on this computer — " +
+      "resume with the same Research ID to get it back."
+    );
+    if (!ok) return;
+    try {
+      localStorage.removeItem("ai_log_research_id");
+      localStorage.removeItem("ai_log_registered");
+    } catch (err) {}
+    location.reload();
+  });
+
   function showWarnBanner(html) {
     document.getElementById("warn-text").innerHTML = html;
     document.getElementById("warn-banner").hidden = false;
@@ -1030,7 +1052,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
         if (result && result.status === "ok") {
           setSubmitState("Submitted — thank you. Keep your full Research ID (<code>" + researchId + "</code>) — including the part after the last dash — in case you need to resume on another device.", false, true);
           showResubmitBanner();
-        } else if (result && result.reason === "would_erase") {
+        } else if (result && (result.reason === "would_erase" || result.reason === "key_required")) {
           setSubmitState(result.message, true, true);
         } else { throw new Error("server returned status=" + (result && result.status)); }
       })
