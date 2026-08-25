@@ -669,6 +669,22 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   }
 
   function restoreDraft() {
+    // Warn up front, before anything fills the form. A session opened with only the
+    // public half can never load submitted answers and cannot replace an existing
+    // submission — but if this browser happens to hold a local draft for that half,
+    // the form fills in and looks entirely normal, and the refusal only arrives at
+    // submit time. Whatever appears below is local to this device, not what is stored.
+    if (resumedFromId && !ridKey(researchId)) {
+      showWarnBanner(
+        "You entered only the first part of your Research ID. Anything shown below is a " +
+        "draft saved in <i>this browser</i> \u2014 your submitted answers cannot be loaded " +
+        "with this half, and <b>it cannot replace an entry you have already submitted</b>. " +
+        "Find your full ID, including the part after the last dash, and resume with that. " +
+        "If you have never submitted, you can carry on and your first submission will go " +
+        "through normally."
+      );
+    }
+
     var local = null;
     try { local = localStorage.getItem(draftKey()); } catch (e) {}
     if (local) {
@@ -694,21 +710,12 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
         // we could not read their previous answers, and submitting from this blank form
         // would replace them. Silence here is how a student overwrites their own work.
         if (!resumedFromId) return;
-        if (!ridKey(researchId)) {
-          showWarnBanner(
-            "You entered only the first part of your Research ID, so your previous answers " +
-            "could not be loaded \u2014 and if you have submitted before, <b>this half alone " +
-            "cannot replace that entry either</b>. Find your full ID, including the part after " +
-            "the last dash, and resume with that. If you have never submitted, you can carry on " +
-            "and your first submission will go through normally."
-          );
-        } else {
-          showWarnBanner(
-            "No previous answers were found for that Research ID. Please check you typed it " +
-            "exactly right, including the part after the last dash \u2014 an ID that is even " +
-            "slightly wrong will neither load your work nor let you resubmit over it."
-          );
-        }
+        if (!ridKey(researchId)) return; // already warned before the form was filled
+        showWarnBanner(
+          "No previous answers were found for that Research ID. Please check you typed it " +
+          "exactly right, including the part after the last dash \u2014 an ID that is even " +
+          "slightly wrong will neither load your work nor let you resubmit over it."
+        );
       })
       .catch(function () {});
   }
