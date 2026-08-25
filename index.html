@@ -73,6 +73,9 @@ main { max-width: 780px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 
 .resubmit-banner { display: flex; align-items: center; gap: 0.6em; background: var(--green-pale); border: 1px solid var(--green); border-radius: 8px; padding: 0.7em 1em; margin-bottom: 1.8em; font-size: 0.88em; color: var(--green-deep); }
 
+.warn-banner { display: flex; align-items: flex-start; gap: 0.6em; background: #fff6e5; border: 1px solid #e0a33c; border-radius: 8px; padding: 0.8em 1em; margin-bottom: 1.8em; font-size: 0.88em; color: #7a4c05; line-height: 1.5; }
+.warn-banner .warn-mark { font-weight: 700; }
+
 .section { margin-bottom: 2.4em; }
 .section-head { display: flex; align-items: baseline; gap: 0.6em; margin-bottom: 0.15em; flex-wrap: wrap; }
 .section-num { font-family: var(--mono); font-size: 0.85em; color: var(--green); font-weight: 700; }
@@ -214,6 +217,10 @@ footer.page-foot { max-width: 780px; margin: 2em auto 0; padding: 0 1.1em; font-
 
   <div class="resubmit-banner" id="resubmit-banner" hidden>
     ✓ <span id="resubmit-text"></span>
+  </div>
+
+  <div class="warn-banner" id="warn-banner" hidden>
+    <span class="warn-mark">!</span><span id="warn-text"></span>
   </div>
 
   <form id="the-form" autocomplete="off" hidden>
@@ -572,6 +579,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   }
 
   var researchId = null;
+  var resumedFromId = false; // true when the student typed an ID rather than being issued one
   try { researchId = localStorage.getItem("ai_log_research_id"); } catch (e) {}
   if (!researchId) {
     researchId = generateResearchId();
@@ -671,6 +679,26 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
         if (result && result.status === "ok" && result.fields) {
           applyDraft(result.fields);
           showSaveIndicator("Loaded your last submitted version");
+          return;
+        }
+        // Nothing came back. For someone who just registered that is normal — there is no
+        // earlier work to load. For someone who typed an ID to resume it is not: it means
+        // we could not read their previous answers, and submitting from this blank form
+        // would replace them. Silence here is how a student overwrites their own work.
+        if (!resumedFromId) return;
+        if (!ridKey(researchId)) {
+          showWarnBanner(
+            "You entered only the first part of your Research ID, so your previous answers " +
+            "could not be loaded. You can still fill this in and submit \u2014 but " +
+            "<b>submitting will replace anything you saved earlier</b>. If you still have your " +
+            "full ID somewhere, including the part after the last dash, reload and use that instead."
+          );
+        } else {
+          showWarnBanner(
+            "No previous answers were found for that Research ID. Please check you typed it " +
+            "exactly right, including the part after the last dash. <b>If you have submitted " +
+            "before, submitting now will replace that entry.</b>"
+          );
         }
       })
       .catch(function () {});
@@ -740,6 +768,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     var id = document.getElementById("resume-id-input").value.trim();
     if (!id) return;
     researchId = id;
+    resumedFromId = true;
     try { localStorage.setItem("ai_log_research_id", researchId); } catch (e) {}
     markRegistered(researchId); // trust the student's own saved ID
     document.getElementById("pill-id").textContent = researchId;
@@ -953,6 +982,11 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     hint.classList.toggle("err", !!isError);
   }
 
+  function showWarnBanner(html) {
+    document.getElementById("warn-text").innerHTML = html;
+    document.getElementById("warn-banner").hidden = false;
+  }
+
   function showResubmitBanner() {
     var banner = document.getElementById("resubmit-banner");
     document.getElementById("resubmit-text").textContent =
@@ -996,6 +1030,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
         if (result && result.status === "ok") {
           setSubmitState("Submitted — thank you. Keep your full Research ID (<code>" + researchId + "</code>) — including the part after the last dash — in case you need to resume on another device.", false, true);
           showResubmitBanner();
+        } else if (result && result.reason === "would_erase") {
+          setSubmitState(result.message, true, true);
         } else { throw new Error("server returned status=" + (result && result.status)); }
       })
       .catch(function (err) {
