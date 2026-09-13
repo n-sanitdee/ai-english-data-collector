@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -168,7 +168,7 @@ footer.page-foot { max-width: 780px; margin: 2em auto 0; padding: 0 1.1em; font-
     </div>
     <span class="save-indicator" id="save-indicator" hidden><span class="dot"></span><span id="save-indicator-text">Draft saved</span></span>
     <div class="lang-switch" role="group" aria-label="Language / ภาษา">
-      <button type="button" id="lang-en" class="on">EN</button><button type="button" id="lang-th">ไทย</button>
+      <button type="button" id="lang-en">EN</button><button type="button" id="lang-th" class="on">ไทย</button>
     </div>
     <div class="id-pill">
       <span class="lbl" data-th="รหัสวิจัย (Research ID)">Research ID</span>
@@ -557,7 +557,10 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   // are what the student works on, not instructions about how to work, and the course
   // requires the work itself to be in English.
   var LANG_KEY = "ai_log_lang";
-  var LANG = "en";
+  // Thai for a first-time visitor: the students are Thai, and the point of having a
+  // translation at all is that they read the instructions in it. A choice they make
+  // themselves is remembered and wins over this default from then on.
+  var LANG = "th";
   try {
     var storedLang = localStorage.getItem(LANG_KEY);
     if (storedLang === "th" || storedLang === "en") LANG = storedLang;
@@ -730,9 +733,12 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   }
   function clearMsg(id) { delete slots[id]; }
 
-  function applyLang(lang) {
-    LANG = (lang === "th") ? "th" : "en";
-    try { localStorage.setItem(LANG_KEY, LANG); } catch (e) {}
+  // Split in two. The page is English in the markup, so with a Thai default the text
+  // has to be swapped before the browser paints or the student sees a flash of English
+  // first. applyLangText() touches nothing that is set up later in this script, so it
+  // can run immediately, straight after this block; applyLang() adds the parts that
+  // need the rest of the page wired up and runs at the end.
+  function applyLangText() {
     document.documentElement.lang = LANG;
 
     document.querySelectorAll("[data-th]").forEach(function (el) {
@@ -749,16 +755,22 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     });
     document.title = tr("page_title");
 
-    Object.keys(slots).forEach(renderSlot);
-    renderMissingList();
-    updateWordCount();
-
     var enBtn = document.getElementById("lang-en");
     var thBtn = document.getElementById("lang-th");
     enBtn.classList.toggle("on", LANG === "en");
     thBtn.classList.toggle("on", LANG === "th");
     enBtn.setAttribute("aria-pressed", LANG === "en" ? "true" : "false");
     thBtn.setAttribute("aria-pressed", LANG === "th" ? "true" : "false");
+  }
+  applyLangText();
+
+  function applyLang(lang) {
+    LANG = (lang === "th") ? "th" : "en";
+    try { localStorage.setItem(LANG_KEY, LANG); } catch (e) {}
+    applyLangText();
+    Object.keys(slots).forEach(renderSlot);
+    renderMissingList();
+    updateWordCount();
   }
 
   document.getElementById("lang-en").addEventListener("click", function () { applyLang("en"); });
