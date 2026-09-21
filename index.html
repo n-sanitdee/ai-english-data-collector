@@ -153,6 +153,31 @@ main { max-width: 920px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 .rating-scale button.sel.active { box-shadow: 0 0 0 2px var(--green-pale), 0 0 0 3px var(--green); }
 
 .model-block { border-left: 3px solid var(--green-pale); padding-left: 1em; margin-bottom: 1.6em; }
+.dialogue-grid { display: grid; gap: 1.2em; }
+@media (min-width: 880px) {
+  /* Three transcripts side by side, so a student can read across them while
+     writing 3.2. Subgrid lines the titles, the version pickers and the
+     textareas up across the columns; without it the columns still work, they
+     just start their textareas at their own heights. */
+  .dialogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto auto; gap: 1.1em; }
+  .dialogue-grid .model-block { margin-bottom: 0; padding-left: 0.85em; grid-row: span 3; display: grid; grid-template-rows: auto auto 1fr; }
+  .dialogue-grid .model-block .field { margin-bottom: 0; display: flex; flex-direction: column; }
+  .dialogue-grid .model-block .field + .field { margin-top: 0.9em; }
+  .dialogue-grid .model-block textarea.big { flex: 1; min-height: 24em; }
+  .dialogue-grid .model-block h3 { margin-bottom: 0.55em; }
+}
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 880px) {
+    .dialogue-grid .model-block { grid-template-rows: subgrid; row-gap: 0.9em; }
+    .dialogue-grid .model-block .field + .field { margin-top: 0; }
+  }
+}
+@media (min-width: 880px) {
+  /* The container is 920px; three readable columns want more than that, so this
+     one block steps outside it and re-centres itself, up to 1240px. On a screen
+     too narrow for that, max() pins it back to the container width. */
+  .dialogue-grid { --grid-w: max(100%, min(1240px, calc(100vw - 3em))); width: var(--grid-w); margin-left: calc(50% - var(--grid-w) / 2); }
+}
 
 .submit-card { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 1.4em 1.5em; position: relative; }
 .submit-card h2 { font-family: var(--serif); font-size: 1.2em; margin: 0 0 0.5em; }
@@ -462,6 +487,7 @@ Sales Coordinator, EcoFlow Supply Co.
         <h3 data-th="3.1 บทสนทนา (Dialogue)">3.1 Dialogue</h3>
         <p class="subsection-desc" data-th="บันทึกการสนทนา 1 รายการต่อ 1 โมเดล AI — ตั้งแต่คำสั่งแรกสุดของนักศึกษาไปจนถึงตารางสรุปการสั่งซื้อ (Order Table) ขั้นสุดท้าย">One transcript per model — from your first brief to the final Order Table.</p>
 
+        <div class="dialogue-grid">
         <div class="model-block">
           <h3 style="margin-top:0">3.1.1 ChatGPT</h3>
           <div class="field" data-required="true" id="f-p3-chatgpt-version" data-label="Project 3 — ChatGPT version" data-label-th="โปรเจคที่ 3 — เวอร์ชันของ ChatGPT">
@@ -522,6 +548,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 
 AI: Here's the table: | Item | Qty | Price | ..."></textarea>
           </div>
+        </div>
         </div>
       </div>
 
