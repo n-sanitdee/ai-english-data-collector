@@ -61,18 +61,21 @@ main { max-width: 920px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 .steps li { margin-bottom: 0.45em; font-size: 0.95em; }
 .steps li b { color: var(--green-deep); }
 
-.composition { margin-top: 1.3em; border-top: 1px solid var(--rule); padding-top: 1.05em; }
-.composition h2 { font-family: var(--serif); font-size: 1.06em; margin: 0 0 0.2em; }
-.comp-lede { font-size: 0.85em; color: var(--ink-soft); margin: 0 0 0.85em; }
+.composition { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 1.25em 1.4em; margin-bottom: 2.6em; }
+.composition h2 { font-family: var(--serif); font-size: 1.15em; margin: 0 0 0.2em; }
+.comp-lede { font-size: 0.85em; color: var(--ink-soft); margin: 0 0 0.9em; }
 .comp-lede .req { color: var(--err); }
 .comp-list { list-style: none; margin: 0; padding: 0; }
-.comp-item { padding: 0.6em 0; border-top: 1px dashed var(--rule); }
+.comp-item { padding: 0.75em 0; border-top: 1px dashed var(--rule); }
 .comp-item:first-child { border-top: none; padding-top: 0; }
 .comp-head { display: flex; align-items: baseline; gap: 0.5em; flex-wrap: wrap; }
-.comp-tag { font-family: var(--mono); font-size: 0.76em; font-weight: 700; color: var(--green); white-space: nowrap; }
-.comp-name { font-weight: 600; font-size: 0.94em; }
+.comp-name { font-weight: 600; font-size: 0.96em; }
 .comp-pts { font-family: var(--mono); font-size: 0.68em; background: var(--paper-dim); border: 1px solid var(--rule); color: var(--ink-soft); border-radius: 999px; padding: 0.15em 0.65em; margin-left: auto; white-space: nowrap; }
-.comp-what { font-size: 0.87em; color: var(--ink-soft); margin-top: 0.2em; max-width: 68ch; }
+.comp-ref { display: block; font-size: 0.8em; color: var(--ink-soft); margin-top: 0.15em; }
+.comp-steps { margin: 0.5em 0 0; padding-left: 1.5em; font-size: 0.88em; }
+.comp-steps li { margin-bottom: 0.35em; }
+.comp-steps li:last-child { margin-bottom: 0; }
+.comp-all { margin-top: 1.1em; font-size: 0.88em; background: var(--green-pale); border-left: 3px solid var(--green); border-radius: 0 7px 7px 0; padding: 0.7em 1em; color: #1e4038; }
 
 .roster-panel { border: 1px solid var(--gold); background: var(--gold-pale); border-radius: 10px; padding: 1.3em 1.4em; margin-bottom: 1.8em; }
 .roster-panel h2 { font-family: var(--serif); font-size: 1.15em; margin: 0 0 0.3em; color: #6b4e12; }
@@ -178,7 +181,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
   <div class="topbar-inner">
     <div class="brand">
       <span class="brand-title" data-th="บันทึกการใช้งาน AI">AI Usage Log</span>
-      <span class="brand-sub" data-th="วิชา GE5072 / GE072 · โครงการเรียนรู้ที่บูรณาการร่วมกับ AI โครงการที่ 1–3">GE5072 / GE072 · AI-Integrated Learning Projects 1–3</span>
+      <span class="brand-sub" data-th="วิชา GE5072 / GE072 · โครงการเรียนรู้ที่บูรณาการร่วมกับ AI โปรเจคที่ 1–3">GE5072 / GE072 · AI-Integrated Learning Projects 1–3</span>
     </div>
     <span class="save-indicator" id="save-indicator" hidden><span class="dot"></span><span id="save-indicator-text">Draft saved</span></span>
     <div class="lang-switch" role="group" aria-label="Language / ภาษา">
@@ -197,65 +200,14 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
   <div class="intro-card">
     <h1 data-th="ส่งบันทึกการสนทนากับ AI (AI Transcripts) ของนักศึกษา">Submit your AI transcripts</h1>
     <div class="course-line" data-th="วิชาภาษาอังกฤษธุรกิจเพื่อการสื่อสารระหว่างประเทศ 1 · แบบฝึกหัดเพิ่มเติมและโครงการที่บูรณาการร่วมกับ AI, ส่วน B">Business English for International Communication 1 · Extra Exercises &amp; AI-Integrated Projects, Part B</div>
-    <div class="scope-note" data-th="ส่วนนี้จะครอบคลุมโครงการเรียนรู้ที่บูรณาการร่วมกับ AI ทั้ง 3 โครงการ (คิดเป็น 75 คะแนน จากคะแนนแบบฝึกหัดเพิ่มเติมทั้งหมด 100 คะแนน หรือ 10% ของเกรดทั้งหมด) สำหรับแบบฝึกหัดในหนังสือเรียนส่วน A จะแยกต่างหาก โดยสามารถดูรายละเอียดได้ในแอป Teams">This covers the three AI-Integrated Learning Projects (75 of the 100 Extra Exercise points, 10% of your grade). Part A workbook exercises are separate — see Teams.</div>
-    <div class="lang-note" data-th="คำแนะนำ หัวข้อ และข้อความต่าง ๆ ในหน้านี้มีให้บริการทั้งภาษาอังกฤษและภาษาไทย ซึ่งนักศึกษาสามารถกดปุ่ม <b>EN / ไทย</b> ด้านบนเพื่อสลับภาษาได้ โดยทั้งสองเวอร์ชันมีเนื้อหาเหมือนกันทุกประการ อย่างไรก็ตาม <b>งานที่นักศึกษาส่งจะต้องเขียนเป็นภาษาอังกฤษเท่านั้น</b> ตามข้อกำหนดของรายวิชา และในโครงการที่ 3 (Project 3) จะต้องใช้ข้อความสั่งการ (Prompt) ที่กำหนดไว้ให้แบบเป๊ะ ๆ ห้ามดัดแปลง">The instructions, labels and messages on this page are available in English and Thai — switch with the <b>EN / ไทย</b> buttons at the top. Both versions say the same thing. Your <b>submitted work must still be written in English</b>, as the course requires, and the fixed prompt in Project 3 must be used exactly as given.</div>
+    <div class="scope-note" data-th="ส่วนนี้จะครอบคลุมโครงการเรียนรู้ที่บูรณาการร่วมกับ AI ทั้ง 3 โปรเจค (คิดเป็น 75 คะแนน จากคะแนนแบบฝึกหัดเพิ่มเติมทั้งหมด 100 คะแนน หรือ 10% ของเกรดทั้งหมด) สำหรับแบบฝึกหัดในหนังสือเรียนส่วน A จะแยกต่างหาก โดยสามารถดูรายละเอียดได้ในแอป Teams">This covers the three AI-Integrated Learning Projects (75 of the 100 Extra Exercise points, 10% of your grade). Part A workbook exercises are separate — see Teams.</div>
+    <div class="lang-note" data-th="คำแนะนำ หัวข้อ และข้อความต่าง ๆ ในหน้านี้มีให้บริการทั้งภาษาอังกฤษและภาษาไทย ซึ่งนักศึกษาสามารถกดปุ่ม <b>EN / ไทย</b> ด้านบนเพื่อสลับภาษาได้ โดยทั้งสองเวอร์ชันมีเนื้อหาเหมือนกันทุกประการ อย่างไรก็ตาม <b>งานที่นักศึกษาส่งจะต้องเขียนเป็นภาษาอังกฤษเท่านั้น</b> ตามข้อกำหนดของรายวิชา และในโปรเจคที่ 3 (Project 3) จะต้องใช้ข้อความสั่งการ (Prompt) ที่กำหนดไว้ให้แบบเป๊ะ ๆ ห้ามดัดแปลง">The instructions, labels and messages on this page are available in English and Thai — switch with the <b>EN / ไทย</b> buttons at the top. Both versions say the same thing. Your <b>submitted work must still be written in English</b>, as the course requires, and the fixed prompt in Project 3 must be used exactly as given.</div>
     <ol class="steps">
       <li data-th="นักศึกษาสามารถออกจากหน้านี้และกลับมาทำต่อภายหลังได้ ระบบจะบันทึกทุกอย่างที่นักศึกษาพิมพ์ลงในเบราว์เซอร์นี้โดยอัตโนมัติในระหว่างที่ทำ และจะไม่มีการส่งข้อมูลใด ๆ ไปจนกว่านักศึกษาจะกดปุ่ม<b>ส่ง (Submit)</b>">You can leave and come back — everything you type is saved automatically in this browser as you go, right up until you submit. Nothing is sent anywhere until you press <b>Submit</b>.</li>
       <li data-th="ข้อมูลจะถูกแยกส่งไปยังสองปลายทางโดยเจตนา: <b>รหัสนักศึกษา</b>ของนักศึกษาจะถูกส่งไปยังบัญชีรายชื่อส่วนตัวของผู้ช่วยวิจัยเท่านั้น ผู้สอนจะไม่เห็นรหัสนักศึกษา ส่วนข้อมูลอื่น ๆ ทั้งหมดจะเชื่อมโยงกับ<b>รหัสวิจัย (Research ID)</b>ของนักศึกษาเท่านั้น ซึ่งเป็นข้อมูลที่ผู้สอนจะใช้ในการอ่านและตรวจให้คะแนน">Two destinations, kept apart on purpose: your <b>Student ID</b> goes only to a private roster your research assistant holds — your instructor never sees it. Everything else is tied only to your <b>Research ID</b>, which is what your instructor actually reads and grades.</li>
-      <li data-th="กรุณากรอกข้อมูลให้ครบทุกส่วน และให้นักศึกษาคัดลอกบันทึกการสนทนาฉบับเต็มมาวาง ห้ามใช้วิธีสรุปความ โดยต้องใส่ครบทุกคำสั่ง (Prompt) ที่นักศึกษาส่งไป และทุกคำตอบที่นักศึกษาได้รับกลับมา ตั้งแต่เริ่มต้นจนจบการสนทนา">Fill in every section. Paste full transcripts, not summaries — every prompt you sent and every reply you got, from the beginning until the end.</li>
       <li data-th="นักศึกษาสามารถส่งงานใหม่ (Resubmit) กี่ครั้งก็ได้ตามต้องการก่อนจะถึงวันครบกำหนดส่ง โดยการส่งใหม่จะเป็นการอัปเดตข้อมูลทับข้อมูลเดิมของนักศึกษา">You can resubmit as many times as you need before the deadline — resubmitting just updates your existing entry.</li>
     </ol>
 
-    <div class="composition">
-      <h2 data-th="แบบฟอร์มนี้ประกอบด้วยอะไรบ้าง">What's in this form</h2>
-      <p class="comp-lede" data-th="ทั้งหมด 5 ส่วน อยู่ในหน้าเดียวกันนี้ เรียงตามลำดับที่นักศึกษาจะพบ ช่องที่มีเครื่องหมาย <span class=&quot;req&quot;>*</span> จำเป็นต้องกรอกทุกช่อง">Five parts, all on this one page, in the order you meet them. Every field marked <span class="req">*</span> has to be filled in.</p>
-      <ul class="comp-list">
-
-        <li class="comp-item">
-          <div class="comp-head">
-            <span class="comp-tag" data-th="ขั้นที่ 1">Step 1</span>
-            <span class="comp-name" data-th="ลงทะเบียน (ข้อมูลส่วนตัว เฉพาะผู้ช่วยวิจัยเท่านั้นที่เข้าถึงได้)">Register (private, RA-only)</span>
-          </div>
-          <div class="comp-what" data-th="กรอกรหัสนักศึกษาและกลุ่มเรียน ซึ่งจะถูกส่งไปยังบัญชีรายชื่อส่วนตัวของผู้ช่วยวิจัยเท่านั้น จากนั้นนักศึกษาจะได้รับรหัสวิจัย (Research ID) และบริษัทที่ได้รับมอบหมายสำหรับโครงการที่ 1 โดยโครงการทั้งสามจะยังไม่ปรากฏขึ้นจนกว่าจะทำขั้นตอนนี้เสร็จ">Your Student ID and section, which go only to the research assistant's private roster. In return you get your Research ID and the company assigned to you for Project 1. The three projects stay hidden until this is done.</div>
-        </li>
-
-        <li class="comp-item">
-          <div class="comp-head">
-            <span class="comp-tag">&sect;1</span>
-            <span class="comp-name" data-th="โครงการที่ 1 — เรื่องราวของบริษัทจาก AI และการตรวจสอบข้อเท็จจริง">Project 1 — AI Company Story &amp; Fact-Check</span>
-            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
-          </div>
-          <div class="comp-what" data-th="ส่ง 4 อย่าง ได้แก่ เครื่องมือ AI และเวอร์ชันที่ใช้ บทสนทนาฉบับเต็ม เรื่องราวฉบับสมบูรณ์ความยาว 120–150 คำ ที่กำกับวลีกริยารูปอดีตไว้ในวงเล็บท้ายทุกประโยค และผลการตรวจสอบข้อเท็จจริงเฉพาะจุดที่ AI ให้ข้อมูลคลาดเคลื่อน พร้อมระบุแหล่งอ้างอิงของแต่ละจุด">Four things to submit: which AI tool and version you used, the full dialogue, the finished 120–150 word story with every past-tense verb phrase tagged in brackets, and your fact-check of anything the AI got wrong, with a source for each correction.</div>
-        </li>
-
-        <li class="comp-item">
-          <div class="comp-head">
-            <span class="comp-tag">&sect;2</span>
-            <span class="comp-name" data-th="โครงการที่ 2 — ข้อมูลบริษัทไทย">Project 2 — Thai Company Profile</span>
-            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
-          </div>
-          <div class="comp-what" data-th="ส่ง 4 อย่าง ได้แก่ เครื่องมือ AI และเวอร์ชันที่ใช้ บทสนทนาฉบับเต็ม คำอธิบายบริบทของตลาดต่างประเทศที่นักศึกษาเลือกเขียนถึง และกลยุทธ์ที่นักศึกษาพัฒนาขึ้นเพื่อปรับข้อมูลบริษัทให้เข้ากับตลาดนั้น">Four things: the tool and version, the full dialogue, a description of the international market you are writing for, and the strategies you developed to adapt the profile to it.</div>
-        </li>
-
-        <li class="comp-item">
-          <div class="comp-head">
-            <span class="comp-tag">&sect;3</span>
-            <span class="comp-name" data-th="โครงการที่ 3 — การเปรียบเทียบโมเดล AI">Project 3 — AI Model Comparison</span>
-            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
-          </div>
-          <div class="comp-what" data-th="ส่วนที่ยาวที่สุด ให้คัดลอกข้อความสั่งการ (Prompt) ที่กำหนดไว้ให้ในหน้านี้ไปวางแบบเป๊ะ ๆ โดยห้ามดัดแปลง ทั้งใน ChatGPT, Claude และ Gemini แล้วส่งเวอร์ชันของทั้งสามโมเดล บทสนทนาของทั้งสามโมเดล บทเปรียบเทียบที่นักศึกษาเขียนขึ้น และคะแนน 1–5 ของแต่ละโมเดล">The longest section. One fixed prompt, given to you here, pasted unchanged into ChatGPT, Claude and Gemini — then all three versions, all three dialogues, your written comparison, and a 1–5 rating for each model.</div>
-        </li>
-
-        <li class="comp-item">
-          <div class="comp-head">
-            <span class="comp-tag">&#10003;</span>
-            <span class="comp-name" data-th="ส่งงาน">Submit</span>
-          </div>
-          <div class="comp-what" data-th="กดปุ่มส่ง (Submit) เมื่อกรอกครบทั้งสามโครงการแล้ว โดยระบบจะแจ้งรายการช่องที่ยังไม่ได้กรอกให้ทราบก่อนส่ง ทั้งนี้นักศึกษาสามารถกลับมาแก้ไขและส่งใหม่ได้จนถึงวันครบกำหนดส่ง">Press Submit once all three projects are filled in — the form lists anything still missing before it sends. You can come back and resubmit until the deadline.</div>
-        </li>
-
-      </ul>
-    </div>
   </div>
 
   <!-- ROSTER (private, RA-only) -->
@@ -291,7 +243,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
       <div class="val" id="assign-id">—</div>
     </div>
     <div class="assign-block">
-      <div class="lbl" data-th="โครงการที่ 1 — บริษัทที่นักศึกษาได้รับมอบหมาย">Project 1 — Company assigned to you</div>
+      <div class="lbl" data-th="โปรเจคที่ 1 — บริษัทที่นักศึกษาได้รับมอบหมาย">Project 1 — Company assigned to you</div>
       <div class="val" id="assign-company">assigning…</div>
     </div>
     <div class="assign-note" id="assign-note">Contacting the class roster to assign your company…</div>
@@ -307,9 +259,52 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
 
   <form id="the-form" autocomplete="off" hidden>
 
+    <div class="composition">
+      <h2 data-th="สิ่งที่นักศึกษาต้องทำในแต่ละส่วน">What you need to do in each section</h2>
+      <p class="comp-lede" data-th="ช่องที่มีเครื่องหมาย <span class=&quot;req&quot;>*</span> จำเป็นต้องกรอกทุกช่อง">Every field marked <span class="req">*</span> has to be filled in.</p>
+      <ul class="comp-list">
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-name" data-th="ส่วนที่ 1 เขียนเกี่ยวกับบริษัทที่ได้รับมอบหมายโดยใช้ past tense">Section 1 — Write about your assigned company using the past tense</span>
+            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
+          </div>
+          <span class="comp-ref" data-th="(อ้างอิงจากเนื้อหาในบทเรียน 2.2. Energy Sector หน้า 21)">(based on Coursebook 2.2 Energy Sector, p.21)</span>
+          <ol class="comp-steps">
+            <li data-th="นักศึกษาให้ AI แต่งเรื่องราวเกี่ยวกับบริษัทที่ได้รับมอบหมาย ความยาว 120–150 คำ ในเรื่องต้องประกอบด้วยกริยารูปอดีต past simple tense และ past continuous tense พร้อมวงเล็บวลีกริยาไว้ท้ายประโยคที่มี">Ask the AI to write a 120–150 word story about the company you have been assigned. The story must contain both past simple and past continuous verbs, with the verb phrase in brackets at the end of every sentence that has one.</li>
+            <li data-th="ตรวจสอบข้อเท็จจริง หาจุดที่ AI ให้ข้อมูลคลาดเคลื่อน พร้อมระบุแหล่งข้อมูลอ้างอิง">Fact-check it — find the points where the AI gave incorrect information, and give the source you used to verify each one.</li>
+          </ol>
+        </li>
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-name" data-th="ส่วนที่ 2 เขียนเกี่ยวกับตลาดและกลยุทธ์การปรับตัว">Section 2 — Write about the market and your adaptation strategies</span>
+            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
+          </div>
+          <span class="comp-ref" data-th="(อ้างอิงจากเนื้อหาในบทเรียน 4.1. One Size Fits All หน้า 39)">(based on Coursebook 4.1 One Size Fits All, p.39)</span>
+          <ol class="comp-steps">
+            <li data-th="นักศึกษาเขียนบรรยายรายละเอียดของตลาดในต่างประเทศ และกลยุทธ์ที่จะปรับเปลี่ยนกิจการให้เข้ากับตลาดดังกล่าว">Describe the international market in detail, and the strategies you would use to adapt the business to that market.</li>
+          </ol>
+        </li>
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-name" data-th="ส่วนที่ 3 เขียนเปรียบเทียบคำตอบของโมเดล AI">Section 3 — Write a comparison of the AI models' answers</span>
+            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
+          </div>
+          <span class="comp-ref" data-th="(อ้างอิงจากเนื้อหาในบทเรียน 4.5. Writing Letter Confirming an Order หน้า 46)">(based on Coursebook 4.5 Writing a Letter Confirming an Order, p.46)</span>
+          <ol class="comp-steps">
+            <li data-th="นักศึกษานำข้อความที่กำหนดไว้ไปแปะเพื่อให้ AI ตอบ แล้วเปรียบเทียบคำตอบของโมเดล AI แต่ละตัว เขียนออกมาเป็นข้อสังเกตของนักศึกษาเอง">Paste the prompt you are given into each AI tool, then compare what each model answered and write it up as your own observations.</li>
+          </ol>
+        </li>
+
+      </ul>
+      <div class="comp-all" data-th="ในทุกส่วน นักศึกษาจะต้องระบุว่าใช้ AI ตัวไหนและเวอร์ชันไหน พร้อมคัดลอกบทสนทนาทั้งหมดมาวาง">In every section you must say which AI tool and version you used, and paste the whole conversation.</div>
+    </div>
+
     <!-- Project 1 -->
     <div class="section">
-      <div class="section-head"><span class="section-num">§1</span><h2 data-th="โครงการที่ 1 — เรื่องราวของบริษัทจาก AI และการตรวจสอบข้อเท็จจริง (AI Company Story &amp; Fact-Check)">Project 1 — AI Company Story &amp; Fact-Check</h2><span class="page-badge" data-th="ปรับปรุงมาจากหนังสือเรียน หน้า 21 · 25 คะแนน">Adapted from Coursebook p.21 · 25 pts</span></div>
+      <div class="section-head"><span class="section-num">§1</span><h2 data-th="โปรเจคที่ 1 — เรื่องราวของบริษัทจาก AI และการตรวจสอบข้อเท็จจริง (AI Company Story &amp; Fact-Check)">Project 1 — AI Company Story &amp; Fact-Check</h2><span class="page-badge" data-th="ปรับปรุงมาจากหนังสือเรียน หน้า 21 · 25 คะแนน">Adapted from Coursebook p.21 · 25 pts</span></div>
       <div class="section-instructions" data-th="ให้นักศึกษาใช้เครื่องมือ AI ที่ต้องการเพื่อเขียนเรื่องราวเกี่ยวกับบริษัทที่นักศึกษาได้รับมอบหมาย จากนั้นให้ทำการตรวจสอบข้อเท็จจริงในสิ่งที่ AI บอกนักศึกษา <span class=&quot;th-aside&quot;>ปรับปรุงมาจากหนังสือเรียน — กรุณาดูข้อกำหนดที่ชัดเจนด้านล่าง เนื่องจากเนื้อหาจะไม่ตรงกับในหนังสือเรียนแบบคำต่อคำ</span>">Use an AI tool of your choice to write a company story about your assigned company, then fact-check what it told you. <i>Adapted from the coursebook — see the exact requirements below, they don't match the book word for word.</i></div>
 
       <div class="field">
@@ -318,7 +313,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
         <div class="readonly-chip" id="company-chip">—</div>
       </div>
 
-      <div class="field" data-required="true" id="f-p1-version" data-label="Project 1 — AI tool &amp; version used" data-label-th="โครงการที่ 1 — เครื่องมือ AI และเวอร์ชันที่ใช้">
+      <div class="field" data-required="true" id="f-p1-version" data-label="Project 1 — AI tool &amp; version used" data-label-th="โปรเจคที่ 1 — เครื่องมือ AI และเวอร์ชันที่ใช้">
         <span class="flabel" data-th="นักศึกษาใช้เครื่องมือ AI ใดและเวอร์ชันไหน? <span class=&quot;req&quot;>*</span>">Which AI tool and version did you use? <span class="req">*</span></span>
         <select name="p1_version">
           <option value="" data-th="— กรุณาเลือก —">— select —</option>
@@ -347,7 +342,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
         </div>
       </div>
 
-      <div class="field" data-required="true" id="f-p1-dialogue" data-label="Project 1 — Dialogue" data-label-th="โครงการที่ 1 — บทสนทนา">
+      <div class="field" data-required="true" id="f-p1-dialogue" data-label="Project 1 — Dialogue" data-label-th="โปรเจคที่ 1 — บทสนทนา">
         <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
         <span class="fnote" data-th="ให้คัดลอกบันทึกการสนทนาฉบับเต็มที่นักศึกษาได้พูดคุยกับ AI ในระหว่างการค้นคว้าและร่างเรื่องราวมาวาง — ต้องใส่ครบทุกคำสั่ง (Prompt) และทุกคำตอบ ตั้งแต่เริ่มต้นจนจบ">Paste the full conversation you had with the AI while researching and drafting the story — every prompt and every reply, start to finish.</span>
         <textarea name="p1_dialogue" class="big" placeholder="You: Can you help me write a short story about SpaceX using past simple and past continuous tense?
@@ -359,7 +354,7 @@ You: Can you make sentence 2 use past continuous more clearly?
 AI: ..."></textarea>
       </div>
 
-      <div class="field" data-required="true" id="f-p1-story" data-label="Project 1 — Final story" data-label-th="โครงการที่ 1 — เรื่องราวฉบับสมบูรณ์">
+      <div class="field" data-required="true" id="f-p1-story" data-label="Project 1 — Final story" data-label-th="โปรเจคที่ 1 — เรื่องราวฉบับสมบูรณ์">
         <span class="flabel" data-th="เรื่องราวฉบับสมบูรณ์ (Final story) <span class=&quot;req&quot;>*</span>">Final story <span class="req">*</span></span>
         <span class="fnote" data-th="เนื้อเรื่องฉบับสมบูรณ์ความยาว 120–150 คำ โดยดึงมาจากบทสนทนาข้างต้น">The finished 120–150 word story, pulled from the dialogue above.</span>
         <div class="tense-instructions">
@@ -370,7 +365,7 @@ AI: ..."></textarea>
         <div class="word-count" id="p1-story-count">0 words</div>
       </div>
 
-      <div class="field" data-required="true" id="f-p1-factcheck" data-label="Project 1 — Fact-check" data-label-th="โครงการที่ 1 — การตรวจสอบข้อเท็จจริง">
+      <div class="field" data-required="true" id="f-p1-factcheck" data-label="Project 1 — Fact-check" data-label-th="โปรเจคที่ 1 — การตรวจสอบข้อเท็จจริง">
         <span class="flabel" data-th="การตรวจสอบข้อเท็จจริง (Fact-check) <span class=&quot;req&quot;>*</span>">Fact-check <span class="req">*</span></span>
         <span class="fnote" data-th="ให้บันทึกเฉพาะจุดที่ข้อมูลของ AI ไม่ตรงกับความเป็นจริงเท่านั้น — หากตรวจสอบแล้วข้อมูลถูกต้องทั้งหมด ให้ระบุว่าข้อมูลถูกต้อง สำหรับข้อมูลที่ไม่ตรงกันแต่ละจุด ให้ระบุสิ่งที่ AI พูด สิ่งที่ถูกต้องตามความเป็นจริง และแนบลิงก์แหล่งข้อมูลที่น่าเชื่อถือที่นักศึกษาใช้ในการตรวจสอบลงไปด้วย">Only note where the AI's information didn't match reality — if everything checked out, say so. For each mismatch, give what the AI said, what's actually correct, and a reliable source link you used to verify it.</span>
         <textarea name="p1_factcheck" placeholder="e.g. The AI said the company was founded in 19XX, but according to [source, link], it was actually founded in 19YY. / No mismatches found — all claims checked out against [source]."></textarea>
@@ -379,10 +374,10 @@ AI: ..."></textarea>
 
     <!-- Project 2 -->
     <div class="section">
-      <div class="section-head"><span class="section-num">§2</span><h2 data-th="โครงการที่ 2 — ข้อมูลบริษัทไทย (Thai Company Profile)">Project 2 — Thai Company Profile</h2><span class="page-badge" data-th="ปรับปรุงมาจากหนังสือเรียน หน้า 39 · 25 คะแนน">Adapted from Coursebook p.39 · 25 pts</span></div>
+      <div class="section-head"><span class="section-num">§2</span><h2 data-th="โปรเจคที่ 2 — ข้อมูลบริษัทไทย (Thai Company Profile)">Project 2 — Thai Company Profile</h2><span class="page-badge" data-th="ปรับปรุงมาจากหนังสือเรียน หน้า 39 · 25 คะแนน">Adapted from Coursebook p.39 · 25 pts</span></div>
       <div class="section-instructions" data-th="ให้นักศึกษาปฏิบัติงานร่วมกันเป็นทีมการตลาด โดยป้อนคำสั่ง (Brief) ให้ AI เขียนข้อมูลบริษัทเพื่อประชาสัมพันธ์บริษัทไทยไปยังตลาดต่างประเทศ — รวมถึงระบุวิธีการที่นักศึกษาจะปรับเปลี่ยนและปรับแต่งเนื้อหาให้เข้ากับตลาดนั้น ๆ ด้วย <span class=&quot;th-aside&quot;>ปรับปรุงมาจากหนังสือเรียน</span>">Working as a marketing team, brief the AI to write a company profile that promotes a Thai company to an international market — including how you'd adapt and customize it for that market. <i>Adapted from the coursebook.</i></div>
 
-      <div class="field" data-required="true" id="f-p2-version" data-label="Project 2 — AI tool &amp; version used" data-label-th="โครงการที่ 2 — เครื่องมือ AI และเวอร์ชันที่ใช้">
+      <div class="field" data-required="true" id="f-p2-version" data-label="Project 2 — AI tool &amp; version used" data-label-th="โปรเจคที่ 2 — เครื่องมือ AI และเวอร์ชันที่ใช้">
         <span class="flabel" data-th="นักศึกษาใช้เครื่องมือ AI ใดและเวอร์ชันไหน? <span class=&quot;req&quot;>*</span>">Which AI tool and version did you use? <span class="req">*</span></span>
         <select name="p2_version">
           <option value="" data-th="— กรุณาเลือก —">— select —</option>
@@ -402,10 +397,10 @@ AI: ..."></textarea>
           <option value="__other__" data-th="อื่น ๆ (โปรดระบุด้านล่าง)">Other (type below)</option>
         </select>
         <input type="text" name="p2_version_other" placeholder="Type tool + version if not listed" data-th-ph="โปรดระบุชื่อเครื่องมือและเวอร์ชัน หากไม่มีในรายการ" style="margin-top:0.5em" hidden>
-        <span class="fnote" data-th="หากไม่แน่ใจว่าใช้ ChatGPT เวอร์ชันใด? ใช้เคล็ดลับเดียวกับในโครงการที่ 1 — โดยการนำเมาส์ไปชี้ที่ไอคอนสร้างคำตอบใหม่รูปวงกลมใต้คำตอบ">Not sure which ChatGPT version? Same trick as in Project 1 — hover the circular regenerate icon below the response.</span>
+        <span class="fnote" data-th="หากไม่แน่ใจว่าใช้ ChatGPT เวอร์ชันใด? ใช้เคล็ดลับเดียวกับในโปรเจคที่ 1 — โดยการนำเมาส์ไปชี้ที่ไอคอนสร้างคำตอบใหม่รูปวงกลมใต้คำตอบ">Not sure which ChatGPT version? Same trick as in Project 1 — hover the circular regenerate icon below the response.</span>
       </div>
 
-      <div class="field" data-required="true" id="f-p2-dialogue" data-label="Project 2 — Dialogue" data-label-th="โครงการที่ 2 — บทสนทนา">
+      <div class="field" data-required="true" id="f-p2-dialogue" data-label="Project 2 — Dialogue" data-label-th="โปรเจคที่ 2 — บทสนทนา">
         <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
         <span class="fnote" data-th="ให้คัดลอกบันทึกการสนทนาฉบับเต็มที่นักศึกษาใช้ป้อนคำสั่งให้กับ AI มาวาง — ทั้งการเขียนข้อมูลบริษัท การคิดกลยุทธ์การปรับเปลี่ยนเนื้อหา และการปรับเนื้อหาให้เข้ากับท้องถิ่น (Localization)">Paste the full conversation you used to brief the AI — writing the company profile, working out an adaptation strategy, and localizing the content.</span>
         <textarea name="p2_dialogue" class="big" placeholder="You: I'm promoting a Thai fruit-snack brand to the Japanese market. Can you help me write a company profile and think through how it needs to adapt?
@@ -413,13 +408,13 @@ AI: ..."></textarea>
 AI: Happy to help — first, a few things worth knowing about the Japanese market before we draft the profile..."></textarea>
       </div>
 
-      <div class="field" data-required="true" id="f-p2-context" data-label="Project 2 — Market context" data-label-th="โครงการที่ 2 — บริบทของตลาดต่างประเทศ">
+      <div class="field" data-required="true" id="f-p2-context" data-label="Project 2 — Market context" data-label-th="โปรเจคที่ 2 — บริบทของตลาดต่างประเทศ">
         <span class="flabel" data-th="บริบทของตลาดต่างประเทศ (Context of the international market) <span class=&quot;req&quot;>*</span>">Context of the international market <span class="req">*</span></span>
         <span class="fnote" data-th="ให้อธิบายลักษณะของตลาดปลายทางว่าเป็นอย่างไร — โดยเลือกข้อมูลใด ๆ ก็ตามที่เกี่ยวข้องกับกลยุทธ์การปรับเปลี่ยนเนื้อหาของนักศึกษา เช่น สภาพอากาศ/ภูมิอากาศ ประชากร วัฒนธรรม ภาษา ภูมิศาสตร์ บรรทัดฐานทางธุรกิจ เป็นต้น">Describe what the destination market is actually like — whatever is relevant to your adaptation strategy: weather/climate, people, culture, language, geography, business norms, etc.</span>
         <textarea name="p2_market_context" placeholder="Describe the destination market's context…"></textarea>
       </div>
 
-      <div class="field" data-required="true" id="f-p2-strategy" data-label="Project 2 — Adaptation strategies" data-label-th="โครงการที่ 2 — กลยุทธ์การปรับเปลี่ยนเนื้อหา">
+      <div class="field" data-required="true" id="f-p2-strategy" data-label="Project 2 — Adaptation strategies" data-label-th="โปรเจคที่ 2 — กลยุทธ์การปรับเปลี่ยนเนื้อหา">
         <span class="flabel" data-th="กลยุทธ์การปรับเปลี่ยนเนื้อหา (Adaptation strategies) <span class=&quot;req&quot;>*</span>">Adaptation strategies <span class="req">*</span></span>
         <span class="fnote" data-th="กลยุทธ์ที่เป็นรูปธรรมที่นักศึกษา (โดยได้รับความช่วยเหลือจาก AI) พัฒนาขึ้นมาเพื่อปรับแต่งข้อมูลบริษัทให้เหมาะสมกับตลาดนั้น ๆ">The concrete strategies you (with the AI's help) developed to adapt the company profile for that market.</span>
         <textarea name="p2_adaptation_strategies" placeholder="Describe your adaptation strategies…"></textarea>
@@ -428,7 +423,7 @@ AI: Happy to help — first, a few things worth knowing about the Japanese marke
 
     <!-- Project 3 -->
     <div class="section">
-      <div class="section-head"><span class="section-num">§3</span><h2 data-th="โครงการที่ 3 — การเปรียบเทียบโมเดล AI (AI Model Comparison)">Project 3 — AI Model Comparison</h2><span class="page-badge" data-th="ปรับปรุงมาจากหนังสือเรียน หน้า 46, แบบฝึกหัด 4.5 · 25 คะแนน">Adapted from Coursebook p.46, Ex. 4.5 · 25 pts</span></div>
+      <div class="section-head"><span class="section-num">§3</span><h2 data-th="โปรเจคที่ 3 — การเปรียบเทียบโมเดล AI (AI Model Comparison)">Project 3 — AI Model Comparison</h2><span class="page-badge" data-th="ปรับปรุงมาจากหนังสือเรียน หน้า 46, แบบฝึกหัด 4.5 · 25 คะแนน">Adapted from Coursebook p.46, Ex. 4.5 · 25 pts</span></div>
       <div class="section-instructions" data-th="ให้นักศึกษาคัดลอกข้อความสั่งการที่กำหนดไว้ (Fixed Prompt) ด้านล่างนี้ — ซึ่งเป็นข้อความเดียวกันสำหรับทุกคนในชั้นเรียน — แล้วนำไปวางแบบเป๊ะ ๆ โดยห้ามดัดแปลง ลงในเครื่องมือ AI ทั้งสามตัว การใช้ข้อมูลนำเข้าเดียวกันกับทุกโมเดลจะทำให้การเปรียบเทียบประสิทธิภาพของแต่ละโมเดลมีความหมาย <span class=&quot;th-aside&quot;>อีเมลสั่งซื้อนี้เป็นอีเมลที่เราแต่งขึ้นมาเองสำหรับแบบฝึกหัดนี้ โดยได้รับแรงบันดาลใจมาจากรูปแบบ “การยืนยันการสั่งซื้อ” ในแบบฝึกหัด 4.5 แต่ไม่ใช่อีเมลจากในหนังสือเรียน และตั้งใจทำให้มีความซับซ้อนขึ้นเล็กน้อย (มีการคำนวณส่วนลดแบบมีเงื่อนไข การแยกจัดส่ง และการคำนวณกำหนดเวลาชำระเงิน) เพื่อให้โมเดลทั้งสามตัวได้แสดงข้อแตกต่างที่แท้จริง นอกจากนี้ ใน Prompt ยังไม่ได้กำหนดรูปแบบตารางไว้ เพื่อให้สามารถเปรียบเทียบวิธีที่แต่ละโมเดลเลือกใช้ในการจัดโครงสร้างข้อมูลด้วย</span>">Copy the fixed prompt below — the same one for everyone in the class — and paste it, exactly as-is, into each of the three AI tools. Using the same input for every model is what makes comparing their performance meaningful. <i>This order email is our own, written for this exercise — it's inspired by Exercise 4.5's "order confirmation" format but isn't the textbook's email, and it's deliberately a bit more complex (conditional discount, split shipping, a payment deadline to calculate) so the three models have something real to differ on. The prompt also doesn't specify a table format on purpose — how each model chooses to structure it is worth comparing too.</i></div>
 
       <div class="fixed-prompt">
@@ -469,7 +464,7 @@ Extract the order details from the email above into a table. Below the table, ad
 
         <div class="model-block">
           <h3 style="margin-top:0">3.1.1 ChatGPT</h3>
-          <div class="field" data-required="true" id="f-p3-chatgpt-version" data-label="Project 3 — ChatGPT version" data-label-th="โครงการที่ 3 — เวอร์ชันของ ChatGPT">
+          <div class="field" data-required="true" id="f-p3-chatgpt-version" data-label="Project 3 — ChatGPT version" data-label-th="โปรเจคที่ 3 — เวอร์ชันของ ChatGPT">
             <span class="flabel" data-th="เวอร์ชัน (Version) <span class=&quot;req&quot;>*</span>">Version <span class="req">*</span></span>
             <select name="p3_chatgpt_version">
               <option value="" data-th="— กรุณาเลือก —">— select —</option>
@@ -478,9 +473,9 @@ Extract the order details from the email above into a table. Below the table, ad
               <option value="__other__" data-th="อื่น ๆ (โปรดระบุด้านล่าง)">Other (type below)</option>
             </select>
             <input type="text" name="p3_chatgpt_version_other" placeholder="Type version if not listed" data-th-ph="โปรดระบุเวอร์ชัน หากไม่มีในรายการ" style="margin-top:0.5em" hidden>
-            <span class="fnote" data-th="หากไม่แน่ใจว่าคือเวอร์ชันไหน? ใช้เคล็ดลับเดียวกับในโครงการที่ 1 — โดยการนำเมาส์ไปชี้ที่ไอคอนสร้างคำตอบใหม่รูปวงกลมใต้คำตอบ">Not sure which one? Same trick as in Project 1 — hover the circular regenerate icon below the response.</span>
+            <span class="fnote" data-th="หากไม่แน่ใจว่าคือเวอร์ชันไหน? ใช้เคล็ดลับเดียวกับในโปรเจคที่ 1 — โดยการนำเมาส์ไปชี้ที่ไอคอนสร้างคำตอบใหม่รูปวงกลมใต้คำตอบ">Not sure which one? Same trick as in Project 1 — hover the circular regenerate icon below the response.</span>
           </div>
-          <div class="field" data-required="true" id="f-p3-chatgpt-dialogue" data-label="Project 3 — ChatGPT dialogue" data-label-th="โครงการที่ 3 — บทสนทนากับ ChatGPT">
+          <div class="field" data-required="true" id="f-p3-chatgpt-dialogue" data-label="Project 3 — ChatGPT dialogue" data-label-th="โปรเจคที่ 3 — บทสนทนากับ ChatGPT">
             <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
             <textarea name="p3_chatgpt_dialogue" class="big" placeholder="You: Here's an order-confirmation email — can you pull the order details into a table?
 
@@ -490,7 +485,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 
         <div class="model-block">
           <h3 style="margin-top:0">3.1.2 Claude</h3>
-          <div class="field" data-required="true" id="f-p3-claude-version" data-label="Project 3 — Claude version" data-label-th="โครงการที่ 3 — เวอร์ชันของ Claude">
+          <div class="field" data-required="true" id="f-p3-claude-version" data-label="Project 3 — Claude version" data-label-th="โปรเจคที่ 3 — เวอร์ชันของ Claude">
             <span class="flabel" data-th="เวอร์ชัน (Version) <span class=&quot;req&quot;>*</span>">Version <span class="req">*</span></span>
             <select name="p3_claude_version">
               <option value="" data-th="— กรุณาเลือก —">— select —</option>
@@ -500,7 +495,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
             </select>
             <input type="text" name="p3_claude_version_other" placeholder="Type version if not listed" data-th-ph="โปรดระบุเวอร์ชัน หากไม่มีในรายการ" style="margin-top:0.5em" hidden>
           </div>
-          <div class="field" data-required="true" id="f-p3-claude-dialogue" data-label="Project 3 — Claude dialogue" data-label-th="โครงการที่ 3 — บทสนทนากับ Claude">
+          <div class="field" data-required="true" id="f-p3-claude-dialogue" data-label="Project 3 — Claude dialogue" data-label-th="โปรเจคที่ 3 — บทสนทนากับ Claude">
             <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
             <textarea name="p3_claude_dialogue" class="big" placeholder="You: Here's an order-confirmation email — can you pull the order details into a table?
 
@@ -510,7 +505,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 
         <div class="model-block">
           <h3 style="margin-top:0">3.1.3 Gemini</h3>
-          <div class="field" data-required="true" id="f-p3-gemini-version" data-label="Project 3 — Gemini version" data-label-th="โครงการที่ 3 — เวอร์ชันของ Gemini">
+          <div class="field" data-required="true" id="f-p3-gemini-version" data-label="Project 3 — Gemini version" data-label-th="โปรเจคที่ 3 — เวอร์ชันของ Gemini">
             <span class="flabel" data-th="เวอร์ชัน (Version) <span class=&quot;req&quot;>*</span>">Version <span class="req">*</span></span>
             <select name="p3_gemini_version">
               <option value="" data-th="— กรุณาเลือก —">— select —</option>
@@ -521,7 +516,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
             </select>
             <input type="text" name="p3_gemini_version_other" placeholder="Type version if not listed" data-th-ph="โปรดระบุเวอร์ชัน หากไม่มีในรายการ" style="margin-top:0.5em" hidden>
           </div>
-          <div class="field" data-required="true" id="f-p3-gemini-dialogue" data-label="Project 3 — Gemini dialogue" data-label-th="โครงการที่ 3 — บทสนทนากับ Gemini">
+          <div class="field" data-required="true" id="f-p3-gemini-dialogue" data-label="Project 3 — Gemini dialogue" data-label-th="โปรเจคที่ 3 — บทสนทนากับ Gemini">
             <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
             <textarea name="p3_gemini_dialogue" class="big" placeholder="You: Here's an order-confirmation email — can you pull the order details into a table?
 
@@ -532,13 +527,13 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 
       <div class="subsection">
         <h3 data-th="3.2 การสังเกตการณ์ในภาพรวม (Overall observation)">3.2 Overall observation</h3>
-        <div class="field" data-required="true" id="f-p3-observation" data-label="Project 3 — Comparison notes" data-label-th="โครงการที่ 3 — บันทึกการเปรียบเทียบ">
+        <div class="field" data-required="true" id="f-p3-observation" data-label="Project 3 — Comparison notes" data-label-th="โปรเจคที่ 3 — บันทึกการเปรียบเทียบ">
           <span class="flabel" data-th="บันทึกการเปรียบเทียบ (Comparison notes) <span class=&quot;req&quot;>*</span>">Comparison notes <span class="req">*</span></span>
           <span class="fnote" data-th="ไม่จำกัดจำนวนคำ ให้นักศึกษาเปรียบเทียบโมเดลทั้งสามตัว — ความถูกต้องของข้อมูลที่ดึงออกมาเมื่อเทียบกับอีเมลต้นฉบับ ความสามารถในการจัดโครงสร้างตารางข้อมูลการสั่งซื้อ (Order Table) วิธีที่แต่ละโมเดลตีความข้อมูลส่วนที่กำกวมในอีเมล และโมเดลใดทำได้ดีที่สุดหรือแย่ที่สุดเพราะเหตุใด">No word limit. Compare the three models — accuracy of extracted data against the original email, how well each structured the Order Table, how each interpreted ambiguous parts of the email, which did best or worst and why.</span>
           <textarea name="p3_observation" class="big" placeholder="Write your comparison here…"></textarea>
         </div>
 
-        <div class="field" data-required="true" id="f-p3-ratings" data-label="Project 3 — Ratings (all three models)" data-label-th="โครงการที่ 3 — การให้คะแนน (ครบทั้งสามโมเดล)">
+        <div class="field" data-required="true" id="f-p3-ratings" data-label="Project 3 — Ratings (all three models)" data-label-th="โปรเจคที่ 3 — การให้คะแนน (ครบทั้งสามโมเดล)">
           <span class="flabel" data-th="การให้คะแนน (Rating 1–5) <span class=&quot;req&quot;>*</span>">Rating (1–5) <span class="req">*</span></span>
           <span class="fnote" data-th="5 = ดีเยี่ยม, 1 = ควรปรับปรุง">5 = excellent, 1 = needs improvement.</span>
           <div class="rating-row" data-model="chatgpt">
@@ -580,7 +575,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 </main>
 
 <footer class="page-foot">
-  <span data-th="รหัสวิจัย (Research ID) เป็นสิ่งระบุตัวตนเพียงสิ่งเดียวที่ผูกติดอยู่กับเนื้อหาโครงการของนักศึกษา กรุณาเก็บรักษารหัสนี้ไว้<b>ทั้งหมด</b> รวมถึงส่วนที่อยู่หลังเครื่องหมายยัติภังค์ (-) ตัวสุดท้าย เนื่องจากนักศึกษาจำเป็นต้องใช้รหัสทั้งหมดนี้เพื่อกลับเข้าสู่ระบบบนอุปกรณ์อื่น ข้อมูลส่วนท้ายสุดนี้จะไม่ถูกจัดเก็บไว้ในบัญชีรายชื่อที่ผู้ช่วยวิจัยถืออยู่ ดังนั้นจึงเป็นข้อมูลชิ้นเดียวที่ไม่มีใครสามารถค้นหาแทนนักศึกษาได้">Your Research ID is the only identifier attached to your project content. Keep <b>all of it</b>, including the part after the last dash — you'll need the whole ID to resume on another device. The final part is never stored in the roster your research assistant holds, so it is the one piece nobody else can look up for you.</span>
+  <span data-th="รหัสวิจัย (Research ID) เป็นสิ่งระบุตัวตนเพียงสิ่งเดียวที่ผูกติดอยู่กับเนื้อหาโปรเจคของนักศึกษา กรุณาเก็บรักษารหัสนี้ไว้<b>ทั้งหมด</b> รวมถึงส่วนที่อยู่หลังเครื่องหมายยัติภังค์ (-) ตัวสุดท้าย เนื่องจากนักศึกษาจำเป็นต้องใช้รหัสทั้งหมดนี้เพื่อกลับเข้าสู่ระบบบนอุปกรณ์อื่น ข้อมูลส่วนท้ายสุดนี้จะไม่ถูกจัดเก็บไว้ในบัญชีรายชื่อที่ผู้ช่วยวิจัยถืออยู่ ดังนั้นจึงเป็นข้อมูลชิ้นเดียวที่ไม่มีใครสามารถค้นหาแทนนักศึกษาได้">Your Research ID is the only identifier attached to your project content. Keep <b>all of it</b>, including the part after the last dash — you'll need the whole ID to resume on another device. The final part is never stored in the roster your research assistant holds, so it is the one piece nobody else can look up for you.</span>
   <div class="ra-contact">
     <span data-th="มีคำถามเกี่ยวกับข้อมูล ความเป็นส่วนตัว บัญชีรายชื่อส่วนตัว หรือเกี่ยวกับฟอร์มนี้ใช่หรือไม่? สามารถติดต่อผู้ช่วยวิจัยของนักศึกษาได้ที่ <b>อาจารย์เทอดเกียรติ เปเหล่าดา (Ajarn Thoedkiat Pelaoda)</b>, คณะมนุษยศาสตร์ มหาวิทยาลัยหอการค้าไทย (UTCC) — โดยโพสต์ในกลุ่ม Teams ของโครงการ, ส่งข้อความโดยตรงทาง Microsoft Teams, อีเมล Thoedkiat_pel@utcc.ac.th หรือโทร 096-401-3019">Questions about your data, privacy, the private roster, or about this form? Contact your research assistant, <b>Ajarn Thoedkiat Pelaoda (อาจารย์เทอดเกียรติ เปเหล่าดา)</b>, Faculty of Humanities, UTCC — post in the project's Teams group, message directly on Microsoft Teams, email Thoedkiat_pel@utcc.ac.th, or call 096-401-3019.</span>
     <div class="project-no">เลขที่โครงการวิจัย / Project no. A04060/2569</div>
