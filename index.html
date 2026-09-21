@@ -154,29 +154,37 @@ main { max-width: 920px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 
 .model-block { border-left: 3px solid var(--green-pale); padding-left: 1em; margin-bottom: 1.6em; }
 .dialogue-grid { display: grid; gap: 1.2em; }
+/* A pasted transcript is full of tables the model drew with pipes or tabs, and a
+   proportional face turns those into soup. Monospace keeps the columns lined up;
+   the nowrap class (the table-mode toggle) stops long rows folding in half. */
+.field textarea[name$="dialogue"] { font-family: var(--mono); font-size: 0.84em; line-height: 1.55; tab-size: 4; }
+.field textarea.nowrap { white-space: pre; overflow-x: auto; }
+.wrap-toggle { font-size: 0.85em; color: var(--ink-soft); margin: -0.2em 0 1em; }
+.wrap-toggle label { display: inline-flex; align-items: center; gap: 0.45em; cursor: pointer; }
+.wrap-toggle input { margin: 0; accent-color: var(--green); }
 @media (min-width: 880px) {
-  /* Three transcripts side by side, so a student can read across them while
-     writing 3.2. Subgrid lines the titles, the version pickers and the
-     textareas up across the columns; without it the columns still work, they
-     just start their textareas at their own heights. */
-  .dialogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto auto; gap: 1.1em; }
+  /* Side by side, so a student can read across the three while writing. The page
+     container is 920px and three readable columns want far more than that, so
+     this block steps outside it and re-centres itself; max() pins it back to the
+     container on a screen too narrow to be worth it. */
+  .dialogue-grid { --grid-w: max(100%, min(1800px, calc(100vw - 2.5em))); width: var(--grid-w); margin-left: calc(50% - var(--grid-w) / 2); grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2em; }
+  .dialogue-grid > .field { margin-bottom: 0; display: flex; flex-direction: column; }
+  .dialogue-grid > .field textarea { flex: 1; min-height: 22em; }
   .dialogue-grid .model-block { margin-bottom: 0; padding-left: 0.85em; grid-row: span 3; display: grid; grid-template-rows: auto auto 1fr; }
   .dialogue-grid .model-block .field { margin-bottom: 0; display: flex; flex-direction: column; }
   .dialogue-grid .model-block .field + .field { margin-top: 0.9em; }
   .dialogue-grid .model-block textarea.big { flex: 1; min-height: 24em; }
   .dialogue-grid .model-block h3 { margin-bottom: 0.55em; }
+  .dialogue-grid.models { grid-template-rows: auto auto auto; }
 }
 @supports (grid-template-rows: subgrid) {
+  /* Subgrid lines the titles, version pickers and textareas up across the three
+     columns, so ChatGPT's extra version hint doesn't push its box out of line.
+     Without it the columns still work, they just start at their own heights. */
   @media (min-width: 880px) {
-    .dialogue-grid .model-block { grid-template-rows: subgrid; row-gap: 0.9em; }
-    .dialogue-grid .model-block .field + .field { margin-top: 0; }
+    .dialogue-grid.models .model-block { grid-template-rows: subgrid; row-gap: 0.9em; }
+    .dialogue-grid.models .model-block .field + .field { margin-top: 0; }
   }
-}
-@media (min-width: 880px) {
-  /* The container is 920px; three readable columns want more than that, so this
-     one block steps outside it and re-centres itself, up to 1240px. On a screen
-     too narrow for that, max() pins it back to the container width. */
-  .dialogue-grid { --grid-w: max(100%, min(1240px, calc(100vw - 3em))); width: var(--grid-w); margin-left: calc(50% - var(--grid-w) / 2); }
 }
 
 .submit-card { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 1.4em 1.5em; position: relative; }
@@ -367,6 +375,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
         </div>
       </div>
 
+      <div class="dialogue-grid">
       <div class="field" data-required="true" id="f-p1-dialogue" data-label="Project 1 — Dialogue" data-label-th="โปรเจคที่ 1 — บทสนทนา">
         <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
         <span class="fnote" data-th="ให้คัดลอกบันทึกการสนทนาฉบับเต็มที่นักศึกษาได้พูดคุยกับ AI ในระหว่างการค้นคว้าและร่างเรื่องราวมาวาง — ต้องใส่ครบทุกคำสั่ง (Prompt) และทุกคำตอบ ตั้งแต่เริ่มต้นจนจบ">Paste the full conversation you had with the AI while researching and drafting the story — every prompt and every reply, start to finish.</span>
@@ -394,6 +403,7 @@ AI: ..."></textarea>
         <span class="flabel" data-th="การตรวจสอบข้อเท็จจริง (Fact-check) <span class=&quot;req&quot;>*</span>">Fact-check <span class="req">*</span></span>
         <span class="fnote" data-th="ให้บันทึกเฉพาะจุดที่ข้อมูลของ AI ไม่ตรงกับความเป็นจริงเท่านั้น — หากตรวจสอบแล้วข้อมูลถูกต้องทั้งหมด ให้ระบุว่าข้อมูลถูกต้อง สำหรับข้อมูลที่ไม่ตรงกันแต่ละจุด ให้ระบุสิ่งที่ AI พูด สิ่งที่ถูกต้องตามความเป็นจริง และแนบลิงก์แหล่งข้อมูลที่น่าเชื่อถือที่นักศึกษาใช้ในการตรวจสอบลงไปด้วย">Only note where the AI's information didn't match reality — if everything checked out, say so. For each mismatch, give what the AI said, what's actually correct, and a reliable source link you used to verify it.</span>
         <textarea name="p1_factcheck" placeholder="e.g. The AI said the company was founded in 19XX, but according to [source, link], it was actually founded in 19YY. / No mismatches found — all claims checked out against [source]."></textarea>
+      </div>
       </div>
     </div>
 
@@ -425,6 +435,7 @@ AI: ..."></textarea>
         <span class="fnote" data-th="หากไม่แน่ใจว่าใช้ ChatGPT เวอร์ชันใด? ใช้เคล็ดลับเดียวกับในโปรเจคที่ 1 — โดยการนำเมาส์ไปชี้ที่ไอคอนสร้างคำตอบใหม่รูปวงกลมใต้คำตอบ">Not sure which ChatGPT version? Same trick as in Project 1 — hover the circular regenerate icon below the response.</span>
       </div>
 
+      <div class="dialogue-grid">
       <div class="field" data-required="true" id="f-p2-dialogue" data-label="Project 2 — Dialogue" data-label-th="โปรเจคที่ 2 — บทสนทนา">
         <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
         <span class="fnote" data-th="ให้คัดลอกบันทึกการสนทนาฉบับเต็มที่นักศึกษาใช้ป้อนคำสั่งให้กับ AI มาวาง — ทั้งการเขียนข้อมูลบริษัท การคิดกลยุทธ์การปรับเปลี่ยนเนื้อหา และการปรับเนื้อหาให้เข้ากับท้องถิ่น (Localization)">Paste the full conversation you used to brief the AI — writing the company profile, working out an adaptation strategy, and localizing the content.</span>
@@ -443,6 +454,7 @@ AI: Happy to help — first, a few things worth knowing about the Japanese marke
         <span class="flabel" data-th="กลยุทธ์การปรับเปลี่ยนเนื้อหา (Adaptation strategies) <span class=&quot;req&quot;>*</span>">Adaptation strategies <span class="req">*</span></span>
         <span class="fnote" data-th="กลยุทธ์ที่เป็นรูปธรรมที่นักศึกษา (โดยได้รับความช่วยเหลือจาก AI) พัฒนาขึ้นมาเพื่อปรับแต่งข้อมูลบริษัทให้เหมาะสมกับตลาดนั้น ๆ">The concrete strategies you (with the AI's help) developed to adapt the company profile for that market.</span>
         <textarea name="p2_adaptation_strategies" placeholder="Describe your adaptation strategies…"></textarea>
+      </div>
       </div>
     </div>
 
@@ -486,8 +498,11 @@ Sales Coordinator, EcoFlow Supply Co.
       <div class="subsection">
         <h3 data-th="3.1 บทสนทนา (Dialogue)">3.1 Dialogue</h3>
         <p class="subsection-desc" data-th="บันทึกการสนทนา 1 รายการต่อ 1 โมเดล AI — ตั้งแต่คำสั่งแรกสุดของนักศึกษาไปจนถึงตารางสรุปการสั่งซื้อ (Order Table) ขั้นสุดท้าย">One transcript per model — from your first brief to the final Order Table.</p>
+        <div class="wrap-toggle">
+          <label><input type="checkbox" id="nowrap-toggle"><span data-th="โหมดตาราง — ไม่ตัดบรรทัด เพื่อให้แถวของตารางไม่ถูกหักครึ่ง (เลื่อนดูในแนวนอนได้)">Table mode — don't wrap lines, so table rows stay in one piece (scroll them sideways)</span></label>
+        </div>
 
-        <div class="dialogue-grid">
+        <div class="dialogue-grid models">
         <div class="model-block">
           <h3 style="margin-top:0">3.1.1 ChatGPT</h3>
           <div class="field" data-required="true" id="f-p3-chatgpt-version" data-label="Project 3 — ChatGPT version" data-label-th="โปรเจคที่ 3 — เวอร์ชันของ ChatGPT">
@@ -1108,6 +1123,29 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       }
     });
   }
+
+  // Table mode. The transcripts students paste are mostly prose, so the boxes wrap
+  // by default; a table the model drew is the one thing wrapping ruins, hence an
+  // opt-in that turns wrapping off for the three §3 boxes and scrolls them
+  // sideways instead. Remembered per browser, like the language choice.
+  (function () {
+    var NOWRAP_KEY = "ai_log_nowrap";
+    var toggle = document.getElementById("nowrap-toggle");
+    if (!toggle) return;
+    var grid = document.querySelector(".dialogue-grid.models");
+    var boxes = grid ? grid.querySelectorAll("textarea") : [];
+    var apply = function (on) {
+      for (var i = 0; i < boxes.length; i++) boxes[i].classList.toggle("nowrap", on);
+    };
+    var saved = null;
+    try { saved = localStorage.getItem(NOWRAP_KEY); } catch (e) {}
+    toggle.checked = (saved === "1");
+    apply(toggle.checked);
+    toggle.addEventListener("change", function () {
+      apply(toggle.checked);
+      try { localStorage.setItem(NOWRAP_KEY, toggle.checked ? "1" : "0"); } catch (e) {}
+    });
+  })();
   document.getElementById("btn-resume").addEventListener("click", function () {
     var id = document.getElementById("resume-id-input").value.trim();
     if (!id) return;
