@@ -61,6 +61,19 @@ main { max-width: 920px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 .steps li { margin-bottom: 0.45em; font-size: 0.95em; }
 .steps li b { color: var(--green-deep); }
 
+.composition { margin-top: 1.3em; border-top: 1px solid var(--rule); padding-top: 1.05em; }
+.composition h2 { font-family: var(--serif); font-size: 1.06em; margin: 0 0 0.2em; }
+.comp-lede { font-size: 0.85em; color: var(--ink-soft); margin: 0 0 0.85em; }
+.comp-lede .req { color: var(--err); }
+.comp-list { list-style: none; margin: 0; padding: 0; }
+.comp-item { padding: 0.6em 0; border-top: 1px dashed var(--rule); }
+.comp-item:first-child { border-top: none; padding-top: 0; }
+.comp-head { display: flex; align-items: baseline; gap: 0.5em; flex-wrap: wrap; }
+.comp-tag { font-family: var(--mono); font-size: 0.76em; font-weight: 700; color: var(--green); white-space: nowrap; }
+.comp-name { font-weight: 600; font-size: 0.94em; }
+.comp-pts { font-family: var(--mono); font-size: 0.68em; background: var(--paper-dim); border: 1px solid var(--rule); color: var(--ink-soft); border-radius: 999px; padding: 0.15em 0.65em; margin-left: auto; white-space: nowrap; }
+.comp-what { font-size: 0.87em; color: var(--ink-soft); margin-top: 0.2em; max-width: 68ch; }
+
 .roster-panel { border: 1px solid var(--gold); background: var(--gold-pale); border-radius: 10px; padding: 1.3em 1.4em; margin-bottom: 1.8em; }
 .roster-panel h2 { font-family: var(--serif); font-size: 1.15em; margin: 0 0 0.3em; color: #6b4e12; }
 .roster-panel p { font-size: 0.88em; color: #6b4e12; margin: 0 0 1em; }
@@ -155,6 +168,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
 @media (max-width: 620px) {
   .assign-card { flex-direction: column; align-items: flex-start; }
   .page-badge { margin-left: 0; }
+  .comp-pts { margin-left: 0; }
 }
 </style>
 </head>
@@ -191,6 +205,57 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
       <li data-th="กรุณากรอกข้อมูลให้ครบทุกส่วน และให้นักศึกษาคัดลอกบันทึกการสนทนาฉบับเต็มมาวาง ห้ามใช้วิธีสรุปความ โดยต้องใส่ครบทุกคำสั่ง (Prompt) ที่นักศึกษาส่งไป และทุกคำตอบที่นักศึกษาได้รับกลับมา ตั้งแต่เริ่มต้นจนจบการสนทนา">Fill in every section. Paste full transcripts, not summaries — every prompt you sent and every reply you got, from the beginning until the end.</li>
       <li data-th="นักศึกษาสามารถส่งงานใหม่ (Resubmit) กี่ครั้งก็ได้ตามต้องการก่อนจะถึงวันครบกำหนดส่ง โดยการส่งใหม่จะเป็นการอัปเดตข้อมูลทับข้อมูลเดิมของนักศึกษา">You can resubmit as many times as you need before the deadline — resubmitting just updates your existing entry.</li>
     </ol>
+
+    <div class="composition">
+      <h2 data-th="แบบฟอร์มนี้ประกอบด้วยอะไรบ้าง">What's in this form</h2>
+      <p class="comp-lede" data-th="ทั้งหมด 5 ส่วน อยู่ในหน้าเดียวกันนี้ เรียงตามลำดับที่นักศึกษาจะพบ ช่องที่มีเครื่องหมาย <span class=&quot;req&quot;>*</span> จำเป็นต้องกรอกทุกช่อง">Five parts, all on this one page, in the order you meet them. Every field marked <span class="req">*</span> has to be filled in.</p>
+      <ul class="comp-list">
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-tag" data-th="ขั้นที่ 1">Step 1</span>
+            <span class="comp-name" data-th="ลงทะเบียน (ข้อมูลส่วนตัว เฉพาะผู้ช่วยวิจัยเท่านั้นที่เข้าถึงได้)">Register (private, RA-only)</span>
+          </div>
+          <div class="comp-what" data-th="กรอกรหัสนักศึกษาและกลุ่มเรียน ซึ่งจะถูกส่งไปยังบัญชีรายชื่อส่วนตัวของผู้ช่วยวิจัยเท่านั้น จากนั้นนักศึกษาจะได้รับรหัสวิจัย (Research ID) และบริษัทที่ได้รับมอบหมายสำหรับโครงการที่ 1 โดยโครงการทั้งสามจะยังไม่ปรากฏขึ้นจนกว่าจะทำขั้นตอนนี้เสร็จ">Your Student ID and section, which go only to the research assistant's private roster. In return you get your Research ID and the company assigned to you for Project 1. The three projects stay hidden until this is done.</div>
+        </li>
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-tag">&sect;1</span>
+            <span class="comp-name" data-th="โครงการที่ 1 — เรื่องราวของบริษัทจาก AI และการตรวจสอบข้อเท็จจริง">Project 1 — AI Company Story &amp; Fact-Check</span>
+            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
+          </div>
+          <div class="comp-what" data-th="ส่ง 4 อย่าง ได้แก่ เครื่องมือ AI และเวอร์ชันที่ใช้ บทสนทนาฉบับเต็ม เรื่องราวฉบับสมบูรณ์ความยาว 120–150 คำ ที่กำกับวลีกริยารูปอดีตไว้ในวงเล็บท้ายทุกประโยค และผลการตรวจสอบข้อเท็จจริงเฉพาะจุดที่ AI ให้ข้อมูลคลาดเคลื่อน พร้อมระบุแหล่งอ้างอิงของแต่ละจุด">Four things to submit: which AI tool and version you used, the full dialogue, the finished 120–150 word story with every past-tense verb phrase tagged in brackets, and your fact-check of anything the AI got wrong, with a source for each correction.</div>
+        </li>
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-tag">&sect;2</span>
+            <span class="comp-name" data-th="โครงการที่ 2 — ข้อมูลบริษัทไทย">Project 2 — Thai Company Profile</span>
+            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
+          </div>
+          <div class="comp-what" data-th="ส่ง 4 อย่าง ได้แก่ เครื่องมือ AI และเวอร์ชันที่ใช้ บทสนทนาฉบับเต็ม คำอธิบายบริบทของตลาดต่างประเทศที่นักศึกษาเลือกเขียนถึง และกลยุทธ์ที่นักศึกษาพัฒนาขึ้นเพื่อปรับข้อมูลบริษัทให้เข้ากับตลาดนั้น">Four things: the tool and version, the full dialogue, a description of the international market you are writing for, and the strategies you developed to adapt the profile to it.</div>
+        </li>
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-tag">&sect;3</span>
+            <span class="comp-name" data-th="โครงการที่ 3 — การเปรียบเทียบโมเดล AI">Project 3 — AI Model Comparison</span>
+            <span class="comp-pts" data-th="25 คะแนน">25 pts</span>
+          </div>
+          <div class="comp-what" data-th="ส่วนที่ยาวที่สุด ให้คัดลอกข้อความสั่งการ (Prompt) ที่กำหนดไว้ให้ในหน้านี้ไปวางแบบเป๊ะ ๆ โดยห้ามดัดแปลง ทั้งใน ChatGPT, Claude และ Gemini แล้วส่งเวอร์ชันของทั้งสามโมเดล บทสนทนาของทั้งสามโมเดล บทเปรียบเทียบที่นักศึกษาเขียนขึ้น และคะแนน 1–5 ของแต่ละโมเดล">The longest section. One fixed prompt, given to you here, pasted unchanged into ChatGPT, Claude and Gemini — then all three versions, all three dialogues, your written comparison, and a 1–5 rating for each model.</div>
+        </li>
+
+        <li class="comp-item">
+          <div class="comp-head">
+            <span class="comp-tag">&#10003;</span>
+            <span class="comp-name" data-th="ส่งงาน">Submit</span>
+          </div>
+          <div class="comp-what" data-th="กดปุ่มส่ง (Submit) เมื่อกรอกครบทั้งสามโครงการแล้ว โดยระบบจะแจ้งรายการช่องที่ยังไม่ได้กรอกให้ทราบก่อนส่ง ทั้งนี้นักศึกษาสามารถกลับมาแก้ไขและส่งใหม่ได้จนถึงวันครบกำหนดส่ง">Press Submit once all three projects are filled in — the form lists anything still missing before it sends. You can come back and resubmit until the deadline.</div>
+        </li>
+
+      </ul>
+    </div>
   </div>
 
   <!-- ROSTER (private, RA-only) -->
