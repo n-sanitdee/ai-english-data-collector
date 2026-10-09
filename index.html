@@ -198,6 +198,8 @@ main { max-width: 920px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 .btn-primary:hover { background: var(--green-deep); }
 .btn-primary:disabled { background: #A9BDB6; cursor: not-allowed; }
 .btn-secondary { background: var(--paper-dim); color: var(--ink); border: 1px solid var(--rule); }
+.btn-secondary:disabled { opacity: 0.55; cursor: not-allowed; }
+.submit-actions { display: flex; flex-wrap: wrap; gap: 0.6em; }
 .submit-hint { font-size: 0.85em; margin-top: 0.8em; color: var(--ink-soft); }
 .submit-hint.err { color: var(--err); }
 
@@ -610,8 +612,11 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     <div class="submit-card">
       <h2 data-th="พร้อมที่จะส่งงานหรือยัง?">Ready to submit?</h2>
       <div class="missing-list" id="missing-list" hidden></div>
-      <button type="submit" class="btn btn-primary" id="btn-submit" data-th="ส่งงาน (Submit)">Submit</button>
-      <div class="submit-hint" id="submit-hint">Nothing is sent until you press Submit. Your draft is already saved in this browser.</div>
+      <div class="submit-actions">
+        <button type="button" class="btn btn-secondary" id="btn-save" data-th="บันทึกไว้ทำต่อ (Save)">Save for later</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit" data-th="ส่งงาน (Submit)">Submit</button>
+      </div>
+      <div class="submit-hint" id="submit-hint">Your draft is saved in this browser as you type. Press Save for later to keep a copy online too, so you can carry on from another device. Press Submit when all three projects are done.</div>
     </div>
 
   </form>
@@ -731,8 +736,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       th: "เรียกคืนข้อมูลฉบับร่างจากเบราว์เซอร์นี้แล้ว"
     },
     save_loaded: {
-      en: "Loaded your last submitted version",
-      th: "โหลดข้อมูลฉบับที่นักศึกษาส่งล่าสุดแล้ว"
+      en: "Loaded the last version you saved or submitted",
+      th: "โหลดข้อมูลฉบับล่าสุดที่นักศึกษาบันทึกหรือส่งไว้แล้ว"
     },
     warn_public_half: {
       en: "You entered only the first part of your Research ID. Anything shown below is a draft saved in <i>this browser</i> — your submitted answers cannot be loaded with this half, and <b>it cannot replace an entry you have already submitted</b>. Find your full ID, including the part after the last dash, and resume with that. If you have never submitted, you can carry on and your first submission will go through normally.",
@@ -747,8 +752,32 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       th: "ส่งเมื่อ {time} นักศึกษาสามารถแก้ไขและส่งใหม่ได้ตลอดเวลาก่อนถึงวันครบกำหนดส่ง โดยการส่งใหม่จะเป็นการอัปเดตข้อมูลรายการนี้ ไม่ใช่การสร้างรายการซ้ำ"
     },
     submit_idle: {
-      en: "Nothing is sent until you press Submit. Your draft is already saved in this browser.",
-      th: "จะไม่มีการส่งข้อมูลใด ๆ ไปจนกว่านักศึกษาจะกดปุ่มส่ง (Submit) ข้อมูลฉบับร่างของนักศึกษาได้ถูกบันทึกไว้ในเบราว์เซอร์นี้เรียบร้อยแล้ว"
+      en: "Your draft is saved in this browser as you type. Press Save for later to keep a copy online too, so you can carry on from another device. Press Submit when all three projects are done.",
+      th: "ระบบบันทึกฉบับร่างไว้ในเบราว์เซอร์นี้ให้อัตโนมัติระหว่างพิมพ์ กดปุ่ม บันทึกไว้ทำต่อ (Save) เพื่อเก็บสำเนาไว้ในระบบออนไลน์ด้วย แล้วจะทำต่อจากอุปกรณ์อื่นได้ เมื่อทำครบทั้ง 3 โปรเจคแล้วให้กดปุ่ม ส่งงาน (Submit)"
+    },
+    save_sending: {
+      en: "Saving…",
+      th: "กำลังบันทึก..."
+    },
+    save_ok: {
+      en: "Saved online at {time}. To carry on from another device, choose Resume there and enter your full Research ID (<code>{id}</code>). When all three projects are done, press Submit.",
+      th: "บันทึกไว้ในระบบออนไลน์แล้วเมื่อ {time} หากต้องการทำต่อจากอุปกรณ์อื่น ให้เลือก กลับเข้าสู่ระบบ (Resume) แล้วกรอกรหัสวิจัย (Research ID) ฉบับเต็ม (<code>{id}</code>) เมื่อทำครบทั้ง 3 โปรเจคแล้วให้กดปุ่ม ส่งงาน (Submit)"
+    },
+    save_nothing: {
+      en: "There is nothing to save yet — type at least one answer first.",
+      th: "ยังไม่มีข้อมูลให้บันทึก — กรุณากรอกคำตอบอย่างน้อย 1 ช่องก่อน"
+    },
+    save_needs_key: {
+      en: "Saving online needs your full Research ID, including the part after the last dash. Your draft is still saved in this browser. Resume with the full ID to save online.",
+      th: "การบันทึกไว้ในระบบออนไลน์ต้องใช้รหัสวิจัย (Research ID) ฉบับเต็ม รวมถึงส่วนที่อยู่หลังเครื่องหมายยัติภังค์ (-) ตัวสุดท้าย ฉบับร่างของนักศึกษายังถูกบันทึกไว้ในเบราว์เซอร์นี้ กรุณากลับเข้าสู่ระบบด้วยรหัสฉบับเต็มเพื่อบันทึกออนไลน์"
+    },
+    save_failed: {
+      en: "Couldn't save online ({err}). Your draft is still saved in this browser — try again in a moment.",
+      th: "บันทึกออนไลน์ไม่สำเร็จ ({err}) ฉบับร่างของนักศึกษายังถูกบันทึกไว้ในเบราว์เซอร์นี้ กรุณาลองใหม่อีกครั้ง"
+    },
+    save_demo: {
+      en: "Demo mode: no server is connected, so the draft stays in this browser only.",
+      th: "โหมดทดลอง: ยังไม่ได้เชื่อมต่อระบบ ฉบับร่างจึงถูกบันทึกไว้ในเบราว์เซอร์นี้เท่านั้น"
     },
     submit_sending: {
       en: "Submitting…",
@@ -1376,6 +1405,15 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     };
   }
 
+  /** True when the student has typed or picked at least one answer. The assigned company
+   *  alone does not count — every registered student has one. */
+  function hasAnyAnswer(payload) {
+    return Object.keys(payload).some(function (k) {
+      if (k === "research_id" || k === "resume_key" || k === "p1_company" || k === "submitted_at_client") return false;
+      return String(payload[k] || "").trim() !== "";
+    });
+  }
+
   function downloadJsonBackup(payload, reason) {
     var blob = new Blob([JSON.stringify({ _reason: reason, submission: payload }, null, 2)], { type: "application/json" });
     var a = document.createElement("a");
@@ -1386,6 +1424,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
 
   function setSubmitState(key, params, isError, reenable) {
     document.getElementById("btn-submit").disabled = !reenable;
+    document.getElementById("btn-save").disabled = !reenable;
     document.getElementById("submit-hint").classList.toggle("err", !!isError);
     setMsg("submit-hint", key, params);
   }
@@ -1415,6 +1454,42 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     setMsg("resubmit-text", "resubmit_text",
       { time: new Date().toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) });
   }
+
+  // ===== Save for later =====
+  // Same POST as Submit, minus the required-field check, so a half-finished form can be
+  // kept online and resumed on another device. The backend cannot tell the two apart, so
+  // a save is marked in submitted_at_client ("saved <time>"); a later Submit overwrites it
+  // with a plain timestamp. Rows still reading "saved …" at the deadline were never submitted.
+  document.getElementById("btn-save").addEventListener("click", function () {
+    var payload = buildPayload();
+    if (!hasAnyAnswer(payload)) { setSubmitState("save_nothing", {}, true, true); return; }
+    // A first write without the secret half leaves a row nobody can overwrite later, which
+    // would block this student's own Submit. Submit tolerates that as a last resort; a
+    // mid-way save should not.
+    if (!payload.resume_key) { setSubmitState("save_needs_key", {}, true, true); return; }
+    if (!SUBMISSIONS_APPS_SCRIPT_URL) { setSubmitState("save_demo", {}, false, true); return; }
+
+    payload.submitted_at_client = "saved " + payload.submitted_at_client;
+    setSubmitState("save_sending", {}, false, false);
+    fetch(SUBMISSIONS_APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      redirect: "follow"
+    })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (result) {
+        if (result && result.status === "ok") {
+          setSubmitState("save_ok", { id: researchId,
+            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }, false, true);
+        } else if (result && (result.reason === "would_erase" || result.reason === "key_required")) {
+          setSubmitState(result.reason === "would_erase" ? "submit_would_erase" : "submit_key_required", {}, true, true);
+        } else { throw new Error("server returned status=" + (result && result.status)); }
+      })
+      .catch(function (err) {
+        setSubmitState("save_failed", { err: (err && err.message) ? err.message : "network error" }, true, true);
+      });
+  });
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
