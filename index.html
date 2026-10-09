@@ -264,7 +264,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
     <div class="submit-hint" id="roster-hint"></div>
     <div class="roster-toggle"><a id="toggle-resume" data-th="เคยลงทะเบียนบนอุปกรณ์อื่นแล้วใช่หรือไม่? กลับเข้าสู่ระบบด้วยรหัสวิจัย (Research ID) ของนักศึกษา">Already registered on another device? Resume with your Research ID</a></div>
     <div class="resume-box" id="resume-box">
-      <input type="text" id="resume-id-input" placeholder="r-20260820-xxxxxx-xxxxxx">
+      <input type="text" id="resume-id-input" placeholder="r-20260820-xxxxxx-xxxxxx" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
       <button type="button" class="btn btn-secondary" id="btn-resume" data-th="กลับเข้าสู่ระบบ">Resume</button>
     </div>
   </div>
@@ -1148,7 +1148,9 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     });
   })();
   document.getElementById("btn-resume").addEventListener("click", function () {
-    var id = document.getElementById("resume-id-input").value.trim();
+    // IDs are always issued in lowercase, and drafts are stored under the exact ID.
+    // Phones capitalise the first letter on their own, so normalise before looking it up.
+    var id = document.getElementById("resume-id-input").value.replace(/\s+/g, "").toLowerCase();
     if (!id) return;
     researchId = id;
     resumedFromId = true;
