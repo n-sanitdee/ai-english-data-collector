@@ -115,6 +115,7 @@ main { max-width: 920px; margin: 0 auto; padding: 1.6em 1.1em 6em; }
 .section-instructions { font-size: 0.88em; background: var(--green-pale); border-left: 3px solid var(--green); border-radius: 0 7px 7px 0; padding: 0.7em 1em; margin: 0.5em 0 1.2em; color: #1e4038; }
 .subsection h3 { font-family: var(--serif); font-size: 1.05em; margin: 1.4em 0 0.4em; color: var(--green-deep); }
 .subsection-desc { font-size: 0.85em; color: var(--ink-soft); margin: -0.2em 0 0.7em; }
+.paste-hint { font-size: 0.86em; background: var(--gold-pale); border-left: 3px solid var(--gold); border-radius: 0 7px 7px 0; padding: 0.7em 1em; margin: 0 0 0.7em; color: #6b4e12; }
 .tense-instructions { font-size: 0.86em; background: var(--gold-pale); border-left: 3px solid var(--gold); border-radius: 0 7px 7px 0; padding: 0.8em 1em; margin: 0.5em 0 1em; color: #6b4e12; }
 .tense-instructions .ex { font-family: var(--mono); font-size: 0.92em; background: var(--paper); border: 1px dashed var(--gold); border-radius: 6px; padding: 0.6em 0.8em; margin-top: 0.5em; color: var(--ink); }
 .version-help { margin-top: 0.5em; font-size: 0.85em; }
@@ -382,6 +383,7 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
       <div class="field" data-required="true" id="f-p1-dialogue" data-label="Project 1 — Dialogue" data-label-th="โปรเจคที่ 1 — บทสนทนา">
         <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
         <span class="fnote" data-th="ให้คัดลอกบันทึกการสนทนาฉบับเต็มที่นักศึกษาได้พูดคุยกับ AI ในระหว่างการค้นคว้าและร่างเรื่องราวมาวาง — ต้องใส่ครบทุกคำสั่ง (Prompt) และทุกคำตอบ ตั้งแต่เริ่มต้นจนจบ">Paste the full conversation you had with the AI while researching and drafting the story — every prompt and every reply, start to finish.</span>
+        <div class="paste-hint" data-th="<b>บทสนทนา</b>คือก๊อปมาวางทั้งคำถามคำตอบ สามารถคลุมดำแล้วก๊อปมาวางในช่องได้เลย"><b>Dialogue</b> means copying and pasting both your questions and the AI&#39;s answers. You can just highlight the whole chat, copy it, and paste it into the box.</div>
         <textarea name="p1_dialogue" class="big" placeholder="You: Can you help me write a short story about SpaceX using past simple and past continuous tense?
 
 AI: Sure — here's a draft: SpaceX was founded in 2002 by Elon Musk. While engineers were testing early rocket designs, the company was also negotiating its first NASA contract...
@@ -442,6 +444,7 @@ AI: ..."></textarea>
       <div class="field" data-required="true" id="f-p2-dialogue" data-label="Project 2 — Dialogue" data-label-th="โปรเจคที่ 2 — บทสนทนา">
         <span class="flabel" data-th="บทสนทนา (Dialogue) <span class=&quot;req&quot;>*</span>">Dialogue <span class="req">*</span></span>
         <span class="fnote" data-th="ให้คัดลอกบันทึกการสนทนาฉบับเต็มที่นักศึกษาใช้ป้อนคำสั่งให้กับ AI มาวาง — ทั้งการเขียนข้อมูลบริษัท การคิดกลยุทธ์การปรับเปลี่ยนเนื้อหา และการปรับเนื้อหาให้เข้ากับท้องถิ่น (Localization)">Paste the full conversation you used to brief the AI — writing the company profile, working out an adaptation strategy, and localizing the content.</span>
+        <div class="paste-hint" data-th="<b>บทสนทนา</b>คือก๊อปมาวางทั้งคำถามคำตอบ สามารถคลุมดำแล้วก๊อปมาวางในช่องได้เลย"><b>Dialogue</b> means copying and pasting both your questions and the AI&#39;s answers. You can just highlight the whole chat, copy it, and paste it into the box.</div>
         <textarea name="p2_dialogue" class="big" placeholder="You: I'm promoting a Thai fruit-snack brand to the Japanese market. Can you help me write a company profile and think through how it needs to adapt?
 
 AI: Happy to help — first, a few things worth knowing about the Japanese market before we draft the profile..."></textarea>
@@ -501,6 +504,7 @@ Sales Coordinator, EcoFlow Supply Co.
       <div class="subsection">
         <h3 data-th="3.1 บทสนทนา (Dialogue)">3.1 Dialogue</h3>
         <p class="subsection-desc" data-th="บันทึกการสนทนา 1 รายการต่อ 1 โมเดล AI — ตั้งแต่คำสั่งแรกสุดของนักศึกษาไปจนถึงตารางสรุปการสั่งซื้อ (Order Table) ขั้นสุดท้าย">One transcript per model — from your first brief to the final Order Table.</p>
+        <div class="paste-hint" data-th="<b>บทสนทนา</b>คือก๊อปมาวางทั้งคำถามคำตอบ สามารถคลุมดำแล้วก๊อปมาวางในช่องได้เลย"><b>Dialogue</b> means copying and pasting both your questions and the AI&#39;s answers. You can just highlight the whole chat, copy it, and paste it into the box.</div>
         <div class="wrap-toggle">
           <label><input type="checkbox" id="nowrap-toggle"><span data-th="โหมดตาราง — ไม่ตัดบรรทัด เพื่อให้แถวของตารางไม่ถูกหักครึ่ง (เลื่อนดูในแนวนอนได้)">Table mode — don't wrap lines, so table rows stay in one piece (scroll them sideways)</span></label>
         </div>
