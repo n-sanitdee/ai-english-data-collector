@@ -796,9 +796,20 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       en: "This record already holds answers, and replacing them needs the full Research ID including the part after the last dash. Nothing was changed. If you no longer have the full ID, contact your research assistant.",
       th: "รายการนี้มีคำตอบอยู่แล้ว การเขียนทับข้อมูลจำเป็นต้องใช้รหัสวิจัย (Research ID) ฉบับเต็มซึ่งรวมส่วนที่อยู่หลังเครื่องหมายยัติภังค์ตัวสุดท้าย ระบบจึงไม่ได้เปลี่ยนแปลงข้อมูลใด ๆ หากนักศึกษาไม่มีรหัสฉบับเต็มแล้ว กรุณาติดต่อผู้ช่วยวิจัย"
     },
+    // The backup file (and this page) carries the student's full Research ID. Sent to the
+    // instructor, it would let the grader link a student to their Research ID, which the
+    // EC-approved protocol forbids, so both failure messages name the RA and only the RA.
     submit_failed: {
-      en: "Submission failed — your responses were downloaded as a backup .json file. Please send that file to your instructor or research assistant, or try again.<br><small>{err}</small>",
-      th: "ส่งไม่สำเร็จ — ระบบได้ดาวน์โหลดคำตอบของนักศึกษาเป็นไฟล์สำรองนามสกุล .json ไว้แล้ว กรุณาส่งไฟล์ดังกล่าวให้ผู้สอนหรือผู้ช่วยวิจัย หรือลองส่งใหม่อีกครั้ง<br><small>{err}</small>"
+      en: "Submission failed. Your answers are still saved in this browser, and a backup .json file was downloaded. Press Submit again in a moment. If it keeps failing, send the backup file to your research assistant, Ajarn Thoedkiat (Thoedkiat_pel@utcc.ac.th), and <b>not</b> to your instructor: the file and this page show your full Research ID.<br><small>{err}</small>",
+      th: "ส่งงานไม่สำเร็จ คำตอบของนักศึกษายังถูกบันทึกไว้ในเบราว์เซอร์นี้ และระบบได้ดาวน์โหลดไฟล์สำรอง .json ไว้ให้แล้ว กรุณากดส่งงาน (Submit) อีกครั้งในอีกสักครู่ หากยังส่งไม่สำเร็จ กรุณาส่งไฟล์สำรองให้ผู้ช่วยวิจัย อาจารย์เทอดเกียรติ (Thoedkiat_pel@utcc.ac.th) <b>กรุณาอย่าส่งไฟล์หรือภาพหน้าจอนี้ให้อาจารย์ผู้สอน</b> เนื่องจากมีรหัสวิจัยฉบับเต็มของนักศึกษา<br><small>{err}</small>"
+    },
+    submit_failed_network: {
+      en: "Submission didn't go through: the connection to the server was cut before it replied. Nothing is lost, because your answers are still saved in this browser. Check your internet, keep this page open, and press Submit again. Submitting again updates your entry and never duplicates it. If it keeps failing, send the backup .json file that was just downloaded to your research assistant, Ajarn Thoedkiat (Thoedkiat_pel@utcc.ac.th), and <b>not</b> to your instructor: the file and this page show your full Research ID.<br><small>{err}</small>",
+      th: "ส่งงานไม่สำเร็จ เนื่องจากการเชื่อมต่อกับระบบถูกตัดก่อนที่ระบบจะตอบกลับ คำตอบของนักศึกษายังถูกบันทึกไว้ในเบราว์เซอร์นี้ ไม่ได้หายไป กรุณาตรวจสอบอินเทอร์เน็ต เปิดหน้านี้ค้างไว้ แล้วกดส่งงาน (Submit) อีกครั้ง การส่งซ้ำจะอัปเดตรายการเดิม ไม่ได้สร้างรายการซ้ำ หากยังส่งไม่สำเร็จ กรุณาส่งไฟล์สำรอง .json ที่ระบบเพิ่งดาวน์โหลดให้ผู้ช่วยวิจัย อาจารย์เทอดเกียรติ (Thoedkiat_pel@utcc.ac.th) <b>กรุณาอย่าส่งไฟล์หรือภาพหน้าจอนี้ให้อาจารย์ผู้สอน</b> เนื่องจากมีรหัสวิจัยฉบับเต็มของนักศึกษา<br><small>{err}</small>"
+    },
+    server_busy: {
+      en: "The server is busy with other students' work right now, so nothing was changed. Your answers are still saved in this browser. Wait about a minute, then press the same button again.",
+      th: "ขณะนี้ระบบกำลังรับงานของนักศึกษาคนอื่นอยู่ จึงยังไม่ได้บันทึกงานครั้งนี้ คำตอบของนักศึกษายังถูกบันทึกไว้ในเบราว์เซอร์นี้ กรุณารอประมาณ 1 นาที แล้วกดปุ่มเดิมอีกครั้ง"
     },
     submit_demo: {
       en: "Demo mode: downloaded your submission as a .json file — this is exactly what the live form would send.",
@@ -1423,6 +1434,21 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     a.click();
   }
 
+  // fetch() rejects with a TypeError when no readable reply came back at all: the
+  // connection dropped, the device slept, or the server answered without CORS headers.
+  // Browsers word it differently ("Load failed" on iPhone/iPad, "Failed to fetch" in
+  // Chrome), so match on the type, not the text.
+  function isNetworkError(err) { return !!err && err.name === "TypeError"; }
+
+  // Plain text only: fill() HTML-escapes every {param} on its way into the page.
+  function errText(err, fallback) {
+    return String((err && err.message) || fallback);
+  }
+
+  function serverError(result) {
+    return new Error("server: " + ((result && (result.message || result.status)) || "no reply"));
+  }
+
   function setSubmitState(key, params, isError, reenable) {
     document.getElementById("btn-submit").disabled = !reenable;
     document.getElementById("btn-save").disabled = !reenable;
@@ -1485,10 +1511,12 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
             time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }, false, true);
         } else if (result && (result.reason === "would_erase" || result.reason === "key_required")) {
           setSubmitState(result.reason === "would_erase" ? "submit_would_erase" : "submit_key_required", {}, true, true);
-        } else { throw new Error("server returned status=" + (result && result.status)); }
+        } else if (result && result.reason === "busy") {
+          setSubmitState("server_busy", {}, true, true);
+        } else { throw serverError(result); }
       })
       .catch(function (err) {
-        setSubmitState("save_failed", { err: (err && err.message) ? err.message : "network error" }, true, true);
+        setSubmitState("save_failed", { err: errText(err, "network error") }, true, true);
       });
   });
 
@@ -1532,11 +1560,16 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
           // keyed on the machine-readable reason — that way the student's language is
           // honoured without a redeploy of the Apps Script.
           setSubmitState(result.reason === "would_erase" ? "submit_would_erase" : "submit_key_required", {}, true, true);
-        } else { throw new Error("server returned status=" + (result && result.status)); }
+        } else if (result && result.reason === "busy") {
+          // Nothing was written and the draft is in this browser, so no backup file:
+          // the extra download prompt only alarms students.
+          setSubmitState("server_busy", {}, true, true);
+        } else { throw serverError(result); }
       })
       .catch(function (err) {
         downloadJsonBackup(payload, "POST failed: " + (err && err.message));
-        setSubmitState("submit_failed", { err: (err && err.message) ? err.message : "unknown error" }, true, true);
+        setSubmitState(isNetworkError(err) ? "submit_failed_network" : "submit_failed",
+          { err: errText(err, "unknown error") }, true, true);
       });
   });
 
