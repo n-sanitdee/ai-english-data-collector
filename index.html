@@ -985,7 +985,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   /** True for a Research ID this page issued: r-YYYYMMDD-xxxxxx, optionally followed by
    *  -yyyyyy (the secret half). Anything else, a student ID above all, is refused: it would
    *  become the row key in the instructor's sheet and show who wrote what. Students typed
-   *  their student ID into Resume on 18-20 Nov 2026, before this check existed. */
+   *  their student ID into Resume from 25 Oct 2026 until this check went in on 20 Nov. */
   function isResearchId(id) {
     return /^r-\d{8}-[a-z0-9]+(-[a-z0-9]+)?$/.test(String(id || ""));
   }
