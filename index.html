@@ -265,11 +265,12 @@ footer.page-foot { max-width: 920px; margin: 2em auto 0; padding: 0 1.1em; font-
     </div>
     <button type="button" class="btn btn-primary" id="btn-register" data-th="ลงทะเบียนและทำต่อ">Register &amp; continue</button>
     <div class="submit-hint" id="roster-hint"></div>
-    <div class="roster-toggle"><a id="toggle-resume" data-th="เคยลงทะเบียนบนอุปกรณ์อื่นแล้วใช่หรือไม่? กลับเข้าสู่ระบบด้วยรหัสวิจัย (Research ID) ของนักศึกษา">Already registered on another device? Resume with your Research ID</a></div>
+    <div class="roster-toggle"><a id="toggle-resume" data-th="เคยลงทะเบียนบนอุปกรณ์อื่นแล้วใช่หรือไม่? กลับเข้าสู่ระบบด้วยรหัสวิจัย (Research ID) ที่ขึ้นต้นด้วย r- (ไม่ใช่รหัสนักศึกษา)">Already registered on another device? Resume with your Research ID (it starts with r-, not your student ID)</a></div>
     <div class="resume-box" id="resume-box">
       <input type="text" id="resume-id-input" placeholder="r-20260820-xxxxxx-xxxxxx" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
       <button type="button" class="btn btn-secondary" id="btn-resume" data-th="กลับเข้าสู่ระบบ">Resume</button>
     </div>
+    <div class="submit-hint" id="resume-hint"></div>
   </div>
 
   <div class="registered-note" id="registered-note" hidden><span data-th="✓ ลงทะเบียนเรียบร้อยแล้ว — รหัสวิจัย (Research ID) ของนักศึกษาจะถูกเชื่อมโยงกับประวัตินักศึกษาเฉพาะในบัญชีรายชื่อส่วนตัวเท่านั้น">✓ Registered — your Research ID is tied to your student record only in the private roster.</span><span class="switch-id"><a id="switch-id" data-th="ไม่ใช่นักศึกษาใช่หรือไม่? ให้ใช้รหัสวิจัย (Research ID) อื่น">Not you? Use a different Research ID</a></span></div>
@@ -704,6 +705,22 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       en: "Couldn't reach the registration service — {err}. Please try again.",
       th: "ไม่สามารถติดต่อระบบลงทะเบียนได้ — {err} กรุณาลองใหม่อีกครั้ง"
     },
+    resume_student_id: {
+      en: "That looks like your student ID. Here you need your <b>Research ID</b>, which starts with <code>r-2026</code> and looks like <code>r-20261119-abc234-def567</code>. You were shown it when you registered, and it is in the name of any backup file this page downloaded. If you can't find it, ask your research assistant, Ajarn Thoedkiat (Thoedkiat_pel@utcc.ac.th), and <b>not</b> your instructor.",
+      th: "ที่กรอกมาน่าจะเป็นรหัสนักศึกษา ช่องนี้ต้องใช้<b>รหัสวิจัย (Research ID)</b> ซึ่งขึ้นต้นด้วย <code>r-2026</code> เช่น <code>r-20261119-abc234-def567</code> นักศึกษาได้รับรหัสนี้ตอนลงทะเบียน และรหัสนี้อยู่ในชื่อไฟล์สำรองที่หน้านี้เคยดาวน์โหลดให้ หากหาไม่พบ กรุณาติดต่อผู้ช่วยวิจัย อ.เทอดเกียรติ (Thoedkiat_pel@utcc.ac.th) <b>ไม่ใช่</b>อาจารย์ผู้สอน"
+    },
+    resume_bad_format: {
+      en: "That isn't a Research ID. A Research ID starts with <code>r-2026</code> and looks like <code>r-20261119-abc234-def567</code>. Please copy it exactly, including the part after the last dash.",
+      th: "รหัสที่กรอกไม่ใช่รหัสวิจัย (Research ID) รหัสวิจัยจะขึ้นต้นด้วย <code>r-2026</code> และมีรูปแบบเช่น <code>r-20261119-abc234-def567</code> กรุณาคัดลอกมาให้ครบถ้วน รวมถึงส่วนที่อยู่หลังเครื่องหมายยัติภังค์ตัวสุดท้าย"
+    },
+    resume_cleared_bad_id: {
+      en: "This browser was signed in with something that isn't a Research ID (most likely a student ID), so it has been signed out. Please resume below with your Research ID, which starts with <code>r-2026</code>. Anything you typed here is still saved in this browser and will come back once you resume. If you can't find your Research ID, ask your research assistant, Ajarn Thoedkiat (Thoedkiat_pel@utcc.ac.th), and <b>not</b> your instructor.",
+      th: "เบราว์เซอร์นี้เคยเข้าสู่ระบบด้วยรหัสที่ไม่ใช่รหัสวิจัย (ส่วนใหญ่คือรหัสนักศึกษา) ระบบจึงออกจากระบบให้แล้ว กรุณากลับเข้าสู่ระบบด้านล่างด้วยรหัสวิจัย (Research ID) ที่ขึ้นต้นด้วย <code>r-2026</code> ข้อมูลที่นักศึกษาเคยพิมพ์ไว้ยังคงบันทึกอยู่ในเบราว์เซอร์นี้ และจะกลับมาเมื่อกลับเข้าสู่ระบบแล้ว หากหารหัสวิจัยไม่พบ กรุณาติดต่อผู้ช่วยวิจัย อ.เทอดเกียรติ (Thoedkiat_pel@utcc.ac.th) <b>ไม่ใช่</b>อาจารย์ผู้สอน"
+    },
+    submit_bad_id: {
+      en: "Nothing was saved: this page is not using a valid Research ID. Reload the page and resume with your Research ID, which starts with <code>r-2026</code>. Your answers are still in this browser.",
+      th: "ระบบไม่ได้บันทึกข้อมูล เนื่องจากหน้านี้ไม่ได้ใช้รหัสวิจัย (Research ID) ที่ถูกต้อง กรุณาโหลดหน้านี้ใหม่ แล้วกลับเข้าสู่ระบบด้วยรหัสวิจัยที่ขึ้นต้นด้วย <code>r-2026</code> คำตอบของนักศึกษายังคงอยู่ในเบราว์เซอร์นี้"
+    },
     assign_assigning: {
       en: "assigning…",
       th: "กำลังจัดสรร..."
@@ -964,6 +981,22 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
     var parts = String(id || "").trim().toLowerCase().split("-");
     return parts.length >= 4 ? parts[3] : "";
   }
+
+  /** True for a Research ID this page issued: r-YYYYMMDD-xxxxxx, optionally followed by
+   *  -yyyyyy (the secret half). Anything else, a student ID above all, is refused: it would
+   *  become the row key in the instructor's sheet and show who wrote what. Students typed
+   *  their student ID into Resume on 18-20 Nov 2026, before this check existed. */
+  function isResearchId(id) {
+    return /^r-\d{8}-[a-z0-9]+(-[a-z0-9]+)?$/.test(String(id || ""));
+  }
+  /** What a student typed or pasted, tidied: no spaces, lowercase, no stray quotes or
+   *  full stops at either end. */
+  function cleanTypedId(s) {
+    return String(s || "").replace(/\s+/g, "").toLowerCase().replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, "");
+  }
+  // Where the page remembers a draft that was typed under a refused ID, so it can be
+  // carried over once the student resumes with their real Research ID.
+  var ORPHAN_DRAFT_KEY = "ai_log_orphan_draft";
   function hashToIndex(str, mod) {
     var h = 0;
     for (var i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
@@ -979,6 +1012,19 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   var researchId = null;
   var resumedFromId = false; // true when the student typed an ID rather than being issued one
   try { researchId = localStorage.getItem("ai_log_research_id"); } catch (e) {}
+  // A browser signed in with anything other than a Research ID is signed out here. Its
+  // draft stays where it is and is carried over once the student resumes properly.
+  var clearedBadId = false;
+  if (researchId && !isResearchId(researchId)) {
+    try {
+      if (localStorage.getItem("ai_log_draft_" + researchId)) localStorage.setItem(ORPHAN_DRAFT_KEY, researchId);
+      localStorage.removeItem("ai_log_company_" + researchId);
+      localStorage.removeItem("ai_log_research_id");
+      localStorage.removeItem("ai_log_registered");
+    } catch (e) {}
+    researchId = null;
+    clearedBadId = true;
+  }
   if (!researchId) {
     researchId = generateResearchId();
     try { localStorage.setItem("ai_log_research_id", researchId); } catch (e) {}
@@ -1112,6 +1158,26 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   var rosterPanel = document.getElementById("roster-panel");
   var registeredNote = document.getElementById("registered-note");
   var assignCard = document.getElementById("assign-card");
+  if (clearedBadId) {
+    document.getElementById("resume-box").classList.add("open");
+    document.getElementById("resume-hint").classList.add("err");
+    setMsg("resume-hint", "resume_cleared_bad_id");
+  }
+
+  // Carries a draft typed under a refused ID over to the Research ID the student resumes
+  // with, but never over a draft that ID already has. The old copy goes only once moved.
+  function adoptOrphanDraft(newId) {
+    try {
+      var oldId = localStorage.getItem(ORPHAN_DRAFT_KEY);
+      if (!oldId) return;
+      var oldDraft = localStorage.getItem("ai_log_draft_" + oldId);
+      if (oldDraft && !localStorage.getItem("ai_log_draft_" + newId)) {
+        localStorage.setItem("ai_log_draft_" + newId, oldDraft);
+        localStorage.removeItem("ai_log_draft_" + oldId);
+      }
+      localStorage.removeItem(ORPHAN_DRAFT_KEY);
+    } catch (e) {}
+  }
 
   document.getElementById("toggle-resume").addEventListener("click", function () {
     document.getElementById("resume-box").classList.toggle("open");
@@ -1191,8 +1257,18 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   document.getElementById("btn-resume").addEventListener("click", function () {
     // IDs are always issued in lowercase, and drafts are stored under the exact ID.
     // Phones capitalise the first letter on their own, so normalise before looking it up.
-    var id = document.getElementById("resume-id-input").value.replace(/\s+/g, "").toLowerCase();
+    var id = cleanTypedId(document.getElementById("resume-id-input").value);
     if (!id) return;
+    var resumeHint = document.getElementById("resume-hint");
+    if (!isResearchId(id)) {
+      resumeHint.classList.add("err");
+      setMsg("resume-hint", /^\d[\d-]{5,}$/.test(id) ? "resume_student_id" : "resume_bad_format");
+      return;
+    }
+    resumeHint.classList.remove("err");
+    clearMsg("resume-hint");
+    resumeHint.innerHTML = "";
+    adoptOrphanDraft(id);
     researchId = id;
     resumedFromId = true;
     try { localStorage.setItem("ai_log_research_id", researchId); } catch (e) {}
@@ -1511,6 +1587,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
             time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }, false, true);
         } else if (result && (result.reason === "would_erase" || result.reason === "key_required")) {
           setSubmitState(result.reason === "would_erase" ? "submit_would_erase" : "submit_key_required", {}, true, true);
+        } else if (result && result.reason === "bad_id") {
+          setSubmitState("submit_bad_id", {}, true, true);
         } else if (result && result.reason === "busy") {
           setSubmitState("server_busy", {}, true, true);
         } else { throw serverError(result); }
@@ -1560,6 +1638,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
           // keyed on the machine-readable reason — that way the student's language is
           // honoured without a redeploy of the Apps Script.
           setSubmitState(result.reason === "would_erase" ? "submit_would_erase" : "submit_key_required", {}, true, true);
+        } else if (result && result.reason === "bad_id") {
+          setSubmitState("submit_bad_id", {}, true, true);
         } else if (result && result.reason === "busy") {
           // Nothing was written and the draft is in this browser, so no backup file:
           // the extra download prompt only alarms students.
