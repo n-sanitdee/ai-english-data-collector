@@ -714,8 +714,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       th: "รหัสที่กรอกไม่ใช่รหัสวิจัย (Research ID) รหัสวิจัยจะขึ้นต้นด้วย <code>r-2026</code> และมีรูปแบบเช่น <code>r-20261119-abc234-def567</code> กรุณาคัดลอกมาให้ครบถ้วน รวมถึงส่วนที่อยู่หลังเครื่องหมายยัติภังค์ตัวสุดท้าย"
     },
     resume_cleared_bad_id: {
-      en: "This browser was signed in with something that isn't a Research ID (most likely a student ID), so it has been signed out. Please resume below with your Research ID, which starts with <code>r-2026</code>. Anything you typed here is still saved in this browser and will come back once you resume. If you can't find your Research ID, ask your research assistant, Ajarn Thoedkiat (Thoedkiat_pel@utcc.ac.th), and <b>not</b> your instructor.",
-      th: "เบราว์เซอร์นี้เคยเข้าสู่ระบบด้วยรหัสที่ไม่ใช่รหัสวิจัย (ส่วนใหญ่คือรหัสนักศึกษา) ระบบจึงออกจากระบบให้แล้ว กรุณากลับเข้าสู่ระบบด้านล่างด้วยรหัสวิจัย (Research ID) ที่ขึ้นต้นด้วย <code>r-2026</code> ข้อมูลที่นักศึกษาเคยพิมพ์ไว้ยังคงบันทึกอยู่ในเบราว์เซอร์นี้ และจะกลับมาเมื่อกลับเข้าสู่ระบบแล้ว หากหารหัสวิจัยไม่พบ กรุณาติดต่อผู้ช่วยวิจัย อ.เทอดเกียรติ (Thoedkiat_pel@utcc.ac.th) <b>ไม่ใช่</b>อาจารย์ผู้สอน"
+      en: "This browser was signed in with something that isn't a Research ID (most likely a student ID), so it has been signed out. If you have a Research ID, which starts with <code>r-2026</code>, resume below with it. <b>If you never registered</b>, register above with your student ID and section, then copy the whole Research ID you are given and keep it. Either way, anything you typed here is still saved in this browser and will come back. If you aren't sure whether you registered, or can't find your Research ID, ask your research assistant, Ajarn Thoedkiat (Thoedkiat_pel@utcc.ac.th), and <b>not</b> your instructor.",
+      th: "เบราว์เซอร์นี้เคยเข้าสู่ระบบด้วยรหัสที่ไม่ใช่รหัสวิจัย (ส่วนใหญ่คือรหัสนักศึกษา) ระบบจึงออกจากระบบให้แล้ว หากนักศึกษามีรหัสวิจัย (Research ID) ที่ขึ้นต้นด้วย <code>r-2026</code> แล้ว กรุณากลับเข้าสู่ระบบด้านล่างด้วยรหัสนั้น <b>หากยังไม่เคยลงทะเบียน</b> กรุณาลงทะเบียนด้านบนด้วยรหัสนักศึกษาและกลุ่มเรียน แล้วคัดลอกรหัสวิจัยที่ได้รับเก็บไว้ให้ครบทุกส่วน ไม่ว่าจะเลือกทางใด ข้อมูลที่นักศึกษาเคยพิมพ์ไว้ยังคงบันทึกอยู่ในเบราว์เซอร์นี้ และจะกลับมาให้เอง หากไม่แน่ใจว่าเคยลงทะเบียนหรือไม่ หรือหารหัสวิจัยไม่พบ กรุณาติดต่อผู้ช่วยวิจัย อ.เทอดเกียรติ (Thoedkiat_pel@utcc.ac.th) <b>ไม่ใช่</b>อาจารย์ผู้สอน"
     },
     submit_bad_id: {
       en: "Nothing was saved: this page is not using a valid Research ID. Reload the page and resume with your Research ID, which starts with <code>r-2026</code>. Your answers are still in this browser.",
@@ -1013,7 +1013,8 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   var resumedFromId = false; // true when the student typed an ID rather than being issued one
   try { researchId = localStorage.getItem("ai_log_research_id"); } catch (e) {}
   // A browser signed in with anything other than a Research ID is signed out here. Its
-  // draft stays where it is and is carried over once the student resumes properly.
+  // draft stays where it is and is carried over once the student resumes with a Research
+  // ID or registers for one.
   var clearedBadId = false;
   if (researchId && !isResearchId(researchId)) {
     try {
@@ -1165,7 +1166,7 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
   }
 
   // Carries a draft typed under a refused ID over to the Research ID the student resumes
-  // with, but never over a draft that ID already has. The old copy goes only once moved.
+  // with or registers, but never over a draft that ID already has. The old copy goes only once moved.
   function adoptOrphanDraft(newId) {
     try {
       var oldId = localStorage.getItem(ORPHAN_DRAFT_KEY);
@@ -1309,6 +1310,9 @@ AI: Here's the table: | Item | Qty | Price | ..."></textarea>
       .then(function (result) {
         if (result && result.status === "ok") {
           markRegistered(researchId);
+          // Someone who once got in with their student ID and never registered: their
+          // answers come with them to the Research ID they have just been issued.
+          adoptOrphanDraft(researchId);
           onRegistered();
         } else {
           // Server rejected the registration (not on roster, wrong group, duplicate
